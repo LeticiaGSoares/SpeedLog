@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Box,
   TextField,
@@ -17,6 +17,7 @@ import { styled } from "@mui/system";
 import speedlog from "../imgs/speedlog.png"; 
 import loadingImage from "../imgs/loadingImage.png"; 
 
+// Estilização de Botão Animado
 const BotaoAnimado = styled(Button)({
   transition: 'background-color 0.3s ease, transform 0.3s ease',
   '&:hover': {
@@ -25,6 +26,7 @@ const BotaoAnimado = styled(Button)({
   },
 });
 
+// Estilizações para Containers
 const Container = styled(Box)({
   display: 'flex',
   justifyContent: 'center',
@@ -53,6 +55,7 @@ const ContainerFormulario = styled(Box)({
   gap: '20px',
 });
 
+// Estilo do Input
 const estiloInput = {
   '& .MuiInput-underline:before': {
     borderBottomColor: '#ccc',
@@ -77,6 +80,7 @@ const estiloInput = {
   },
 };
 
+// Componente de Tela de Carregamento
 const TelaCarregando = ({ loadingImage }) => (
   <Box
     display="flex"
@@ -106,6 +110,26 @@ const TelaCarregando = ({ loadingImage }) => (
   </Box>
 );
 
+// Função para validação de entradas
+const validarEntrada = (emailOuCpf, senha) => {
+  if (!emailOuCpf || !senha) {
+    return 'Por favor, preencha todos os campos.';
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
+  const cpfRegex = /^\d{11}$/; 
+  
+  if (!emailRegex.test(emailOuCpf) && !cpfRegex.test(emailOuCpf)) {
+    return 'Por favor, insira um e-mail válido ou um CPF com 11 dígitos.';
+  }
+
+  if (senha.length < 6) {
+    return 'A senha deve ter pelo menos 6 caracteres.';
+  }
+
+  return null;
+};
+
 const Login = () => {
   const [emailOuCpf, setEmailOuCpf] = useState('');
   const [senha, setSenha] = useState('');
@@ -115,36 +139,18 @@ const Login = () => {
   const [snackbarGravidade, setSnackbarGravidade] = useState('error');
   const [carregando, setCarregando] = useState(true);
 
+  // Efeito para simular carregamento
   useEffect(() => {
     const timer = setTimeout(() => setCarregando(false), 1200);
     return () => clearTimeout(timer);
   }, []);
 
   const handleInputChange = (setter) => (event) => setter(event.target.value);
-  
+
   const handleSnackbarClose = () => setSnackbarOpen(false);
 
-  const validarEntrada = () => {
-    if (!emailOuCpf || !senha) {
-      return 'Por favor, preencha todos os campos.';
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
-    const cpfRegex = /^\d{11}$/; 
-    
-    if (!emailRegex.test(emailOuCpf) && !cpfRegex.test(emailOuCpf)) {
-      return 'Por favor, insira um e-mail válido ou um CPF com 11 dígitos.';
-    }
-
-    if (senha.length < 6) {
-      return 'A senha deve ter pelo menos 6 caracteres.';
-    }
-
-    return null;
-  };
-
-  const handleSubmit = () => {
-    const mensagemErro = validarEntrada();
+  const handleSubmit = useCallback(() => {
+    const mensagemErro = validarEntrada(emailOuCpf, senha);
     if (mensagemErro) {
       setSnackbarMensagem(mensagemErro);
       setSnackbarGravidade('error');
@@ -162,7 +168,7 @@ const Login = () => {
       setSnackbarGravidade('success');
       setSnackbarOpen(true);
     }, 2000);
-  };
+  }, [emailOuCpf, senha, lembrarDeMim]);
 
   if (carregando) {
     return <TelaCarregando loadingImage={loadingImage} />;

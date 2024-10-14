@@ -39,17 +39,40 @@ const TituloEstilizado = styled(Typography)(({ color }) => ({
   transition: "color 0.3s ease",
 }));
 
+const BarraDeProgresso = styled(Box)(({ largura }) => ({
+  position: "absolute",
+  top: 60,
+  left: 43,
+  width: "70%",
+  height: 6,
+  bgcolor: "#90909040",
+  border: "2px solid #b5c0bd",
+  borderRadius: 40,
+  "&::before": {
+    content: '""',
+    display: "block",
+    height: "100%",
+    backgroundColor: "#2cc295",
+    borderRadius: 40,
+    width: largura,
+    transition: "width 0.3s ease",
+  },
+}));
+
+const perfis = ["Cliente", "Motoboy"];
+
 const EscolhaDePerfil = () => {
   const [perfilSelecionado, setPerfilSelecionado] = useState(null);
   const navigate = useNavigate();
 
   const selecionarPerfil = (perfil) => {
-    setPerfilSelecionado(perfil === perfilSelecionado ? null : perfil);
+    setPerfilSelecionado(perfilSelecionado === perfil ? null : perfil);
   };
 
   const irParaProximo = () => {
     if (perfilSelecionado) {
-      navigate(`/perfil/${perfilSelecionado.toLowerCase()}`);
+      const path = perfilSelecionado === "Cliente" ? "/cadastro-cliente" : "/cadastro-motoboy";
+      navigate(path);
     }
   };
 
@@ -57,79 +80,25 @@ const EscolhaDePerfil = () => {
     navigate("/login");
   };
 
+  const larguraBarra = perfilSelecionado ? "50%" : "25%";
+
   return (
     <Box display="flex" justifyContent="center" width="100%" height="100vh" bgcolor="white">
-      <Box
-        position="relative"
-        width="100%"
-        maxWidth={360}
-        height="100%"
-        bgcolor="white"
-        overflow="hidden"
-      >
-        <BotaoProximo
-          variant="contained"
-          onClick={irParaProximo}
-          disabled={!perfilSelecionado}
-        >
-          PRÓXIMO
-        </BotaoProximo>
+      <Box position="relative" width="100%" maxWidth={360} height="100%" bgcolor="white" overflow="hidden">
+        <BarraDeProgresso largura={larguraBarra} />
 
-        <TituloEstilizado
-          variant="h6"
-          color="#8f9799"
-          sx={{ top: 90, left: 43 }}
-        >
+        <TituloEstilizado variant="h6" color="#8f9799" sx={{ top: 90, left: 43 }}>
           Vamos começar!
         </TituloEstilizado>
 
-        <TituloEstilizado
-          variant="h6"
-          color="#2cc295"
-          sx={{ top: 123, left: 38, fontWeight: "bold" }}
-        >
+        <TituloEstilizado variant="h6" color="#2cc295" sx={{ top: 123, left: 38, fontWeight: "bold" }}>
           Qual é o seu perfil?
         </TituloEstilizado>
 
-        <Box
-          sx={{
-            position: "absolute",
-            top: 65,
-            left: 43,
-            width: 274,
-            height: 5,
-            bgcolor: "#90909040",
-            borderRadius: 40,
-          }}
-        >
-          <Box
-            sx={{
-              width: 10,
-              height: 5,
-              bgcolor: "#2cc295",
-              borderRadius: 40,
-            }}
-          />
-        </Box>
-
-        <Grid
-          container
-          direction="column"
-          alignItems="center"
-          spacing={7}
-          sx={{
-            position: "absolute",
-            top: 240,
-            left: 64,
-            width: 240,
-          }}
-        >
-          {["Cliente", "Motoboy"].map((perfil) => (
+        <Grid container direction="column" alignItems="center" spacing={7} sx={{ position: "absolute", top: 240, left: 64, width: 240 }}>
+          {perfis.map((perfil) => (
             <Grid item key={perfil} xs={12}>
-              <Button
-                onClick={() => selecionarPerfil(perfil)}
-                sx={{ padding: 0, textTransform: "none", width: "100%" }}
-              >
+              <Button onClick={() => selecionarPerfil(perfil)} sx={{ padding: 0, textTransform: "none", width: "100%" }}>
                 <Paper
                   elevation={3}
                   sx={{
@@ -163,9 +132,13 @@ const EscolhaDePerfil = () => {
           ))}
         </Grid>
 
-        <IconButton onClick={voltarParaLogin} sx={{ position: "absolute", top: 10, left: 43 }}>
+        <IconButton onClick={voltarParaLogin} aria-label="Voltar para login" sx={{ position: "absolute", top: 10, left: 1 }}>
           <ArrowBackIcon />
         </IconButton>
+
+        <BotaoProximo variant="contained" onClick={irParaProximo} disabled={!perfilSelecionado}>
+          PRÓXIMO
+        </BotaoProximo>
       </Box>
     </Box>
   );
