@@ -17,7 +17,7 @@ import { styled } from "@mui/system";
 import speedlog from "../imgs/speedlog.png"; 
 import loadingImage from "../imgs/loadingImage.png"; 
 
-const AnimatedButton = styled(Button)({
+const BotaoAnimado = styled(Button)({
   transition: 'background-color 0.3s ease, transform 0.3s ease',
   '&:hover': {
     backgroundColor: '#1f9e76',
@@ -33,7 +33,7 @@ const Container = styled(Box)({
   backgroundColor: '#f5f5f5',
 });
 
-const LoginBox = styled(Box)({
+const CaixaLogin = styled(Box)({
   width: '90%',
   maxWidth: 360,
   padding: '32px 24px',
@@ -42,18 +42,18 @@ const LoginBox = styled(Box)({
   borderRadius: '8px',
 });
 
-const ImageContainer = styled(Box)({
+const ContainerImagem = styled(Box)({
   marginBottom: 24,
 });
 
-const FormContainer = styled(Box)({
+const ContainerFormulario = styled(Box)({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   gap: '20px',
 });
 
-const inputStyle = {
+const estiloInput = {
   '& .MuiInput-underline:before': {
     borderBottomColor: '#ccc',
   },
@@ -77,7 +77,7 @@ const inputStyle = {
   },
 };
 
-const LoadingScreen = ({ loadingImage }) => (
+const TelaCarregando = ({ loadingImage }) => (
   <Box
     display="flex"
     flexDirection="column"
@@ -95,7 +95,7 @@ const LoadingScreen = ({ loadingImage }) => (
   >
     <img
       src={loadingImage}
-      alt="Loading"
+      alt="Carregando"
       style={{
         width: '100%',
         maxWidth: '100%',
@@ -107,16 +107,16 @@ const LoadingScreen = ({ loadingImage }) => (
 );
 
 const Login = () => {
-  const [emailOrCpf, setEmailOrCpf] = useState('');
-  const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
+  const [emailOuCpf, setEmailOuCpf] = useState('');
+  const [senha, setSenha] = useState('');
+  const [lembrarDeMim, setLembrarDeMim] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] = useState('error');
-  const [loading, setLoading] = useState(true);
+  const [snackbarMensagem, setSnackbarMensagem] = useState('');
+  const [snackbarGravidade, setSnackbarGravidade] = useState('error');
+  const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1200);
+    const timer = setTimeout(() => setCarregando(false), 1200);
     return () => clearTimeout(timer);
   }, []);
 
@@ -124,19 +124,19 @@ const Login = () => {
   
   const handleSnackbarClose = () => setSnackbarOpen(false);
 
-  const validateInput = () => {
-    if (!emailOrCpf || !password) {
+  const validarEntrada = () => {
+    if (!emailOuCpf || !senha) {
       return 'Por favor, preencha todos os campos.';
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
     const cpfRegex = /^\d{11}$/; 
     
-    if (!emailRegex.test(emailOrCpf) && !cpfRegex.test(emailOrCpf)) {
+    if (!emailRegex.test(emailOuCpf) && !cpfRegex.test(emailOuCpf)) {
       return 'Por favor, insira um e-mail válido ou um CPF com 11 dígitos.';
     }
 
-    if (password.length < 6) {
+    if (senha.length < 6) {
       return 'A senha deve ter pelo menos 6 caracteres.';
     }
 
@@ -144,28 +144,28 @@ const Login = () => {
   };
 
   const handleSubmit = () => {
-    const errorMessage = validateInput();
-    if (errorMessage) {
-      setSnackbarMessage(errorMessage);
-      setSnackbarSeverity('error');
+    const mensagemErro = validarEntrada();
+    if (mensagemErro) {
+      setSnackbarMensagem(mensagemErro);
+      setSnackbarGravidade('error');
       setSnackbarOpen(true);
       return;
     }
 
-    console.log('Email ou CPF:', emailOrCpf, 'Senha:', password, 'Lembrar-me:', rememberMe);
-    setEmailOrCpf('');
-    setPassword('');
+    console.log('Email ou CPF:', emailOuCpf, 'Senha:', senha, 'Lembrar-me:', lembrarDeMim);
+    setEmailOuCpf('');
+    setSenha('');
 
     setTimeout(() => {
       window.location.href = '/home';
-      setSnackbarMessage('Login bem-sucedido!');
-      setSnackbarSeverity('success');
+      setSnackbarMensagem('Login bem-sucedido!');
+      setSnackbarGravidade('success');
       setSnackbarOpen(true);
     }, 2000);
   };
 
-  if (loading) {
-    return <LoadingScreen loadingImage={loadingImage} />;
+  if (carregando) {
+    return <TelaCarregando loadingImage={loadingImage} />;
   }
 
   return (
@@ -176,13 +176,13 @@ const Login = () => {
         onClose={handleSnackbarClose} 
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
-          {snackbarMessage}
+        <Alert onClose={handleSnackbarClose} severity={snackbarGravidade} sx={{ width: '100%' }}>
+          {snackbarMensagem}
         </Alert>
       </Snackbar>
       <Container>
-        <LoginBox>
-          <ImageContainer>
+        <CaixaLogin>
+          <ContainerImagem>
             <img
               src={speedlog}
               alt="SpeedLog"
@@ -192,8 +192,8 @@ const Login = () => {
                 objectFit: 'contain'
               }}
             />
-          </ImageContainer>
-          <FormContainer>
+          </ContainerImagem>
+          <ContainerFormulario>
             <Grid container alignItems="center" spacing={1}>
               <Grid item>
                 <PersonIcon sx={{ color: '#02634D', mt: 2 }} />
@@ -203,9 +203,9 @@ const Login = () => {
                   fullWidth
                   variant="standard"
                   label="E-mail ou CPF"
-                  sx={{ ...inputStyle, '& .MuiInputBase-input': { padding: '8px 0px' }}}
-                  value={emailOrCpf}
-                  onChange={handleInputChange(setEmailOrCpf)}
+                  sx={{ ...estiloInput, '& .MuiInputBase-input': { padding: '8px 0px' }}}
+                  value={emailOuCpf}
+                  onChange={handleInputChange(setEmailOuCpf)}
                 />
               </Grid>
             </Grid>
@@ -219,18 +219,18 @@ const Login = () => {
                   variant="standard"
                   label="Senha"
                   placeholder="Digite sua senha"
-                  sx={{ ...inputStyle, '& .MuiInputBase-input': { padding: '8px 0px' }}}
+                  sx={{ ...estiloInput, '& .MuiInputBase-input': { padding: '8px 0px' }}}
                   type="password"
-                  value={password}
-                  onChange={handleInputChange(setPassword)}
+                  value={senha}
+                  onChange={handleInputChange(setSenha)}
                 />
               </Grid>
             </Grid>
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={rememberMe}
-                  onChange={(event) => setRememberMe(event.target.checked)}
+                  checked={lembrarDeMim}
+                  onChange={(event) => setLembrarDeMim(event.target.checked)}
                   color="primary"
                 />
               }
@@ -240,7 +240,7 @@ const Login = () => {
             <Link href="#" variant="body2" color="#145c46" fontWeight="bold">
               Esqueceu sua senha?
             </Link>
-            <AnimatedButton
+            <BotaoAnimado
               variant="contained"
               fullWidth
               sx={{
@@ -253,15 +253,15 @@ const Login = () => {
               onClick={handleSubmit}
             >
               ENTRAR
-            </AnimatedButton>
+            </BotaoAnimado>
             <Typography variant="body2" color="textSecondary">
               Não possui uma conta?{" "}
-              <Link href="/register" color="#03624c" fontWeight="bold">
+              <Link href="/escolha-de-perfil" color="#03624c" fontWeight="bold">
                 Cadastre-se
               </Link>
             </Typography>
-          </FormContainer>
-        </LoginBox>
+          </ContainerFormulario>
+        </CaixaLogin>
       </Container>
     </>
   );
