@@ -49,7 +49,7 @@ const NextButton = styled(Button)( {
   },
 });
 
-const BarraDeProgresso = styled(Box)( ({ largura = "0%", cor = "#2cc295" }) => ({
+const BarraDeProgresso = styled(Box)( ({ largura = "0%", cor = "#2cc295" }) => ( {
   position: "absolute",
   top: 50,
   left: "50%",
@@ -86,6 +86,9 @@ const estiloInput = {
 const validarCPF = (cpf) => /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(cpf);
 const validarEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 const validarTelefone = (telefone) => /^\(\d{2}\) \d{5}-\d{4}$/.test(telefone);
+const validarNome = (nome) => /^[A-Za-zÀ-ÖØ-öø-ÿ\s]{2,}$/.test(nome);
+const validarDataNascimento = (data) => /^\d{4}-\d{2}-\d{2}$/.test(data);
+const validarSenha = (senha) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_\-+=\[\]{}|;:",.<>/?]).{8,}$/.test(senha);
 
 const estadoInicial = {
   nome: "",
@@ -129,6 +132,9 @@ const CadastroCliente = () => {
   const lidarEnvio = (e) => {
     e.preventDefault();
 
+    const dataNascimento = new Date(dadosFormulario.dataNascimento);
+    const anoAtual = new Date().getFullYear();
+
     if (!dadosFormulario.nome || !dadosFormulario.sobrenome) {
       setSnackbarMessage("Por favor, preencha seu nome e sobrenome.");
       setSnackbarSeverity("error");
@@ -157,8 +163,25 @@ const CadastroCliente = () => {
       return;
     }
 
+    if (!validarSenha(dadosFormulario.senha)) {
+      setSnackbarMessage(
+        "A senha deve ter pelo menos 8 caracteres, incluindo uma letra maiúscula, uma letra minúscula e um caractere especial."
+      );
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+      return;
+    }
+
     if (dadosFormulario.senha !== dadosFormulario.confirmacaoSenha) {
       setSnackbarMessage("As senhas não coincidem.");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+      return;
+    }
+
+    // Validação para o ano de nascimento
+    if (dataNascimento.getFullYear() > anoAtual) {
+      setSnackbarMessage("O ano de nascimento não pode ser maior que o ano atual.");
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
       return;
@@ -178,6 +201,17 @@ const CadastroCliente = () => {
 
   return (
     <Container>
+      <Snackbar
+  open={snackbarOpen}
+  autoHideDuration={4000}
+  onClose={lidarFecharSnackbar}
+                  anchorOrigin={{ vertical: 'top', horizontal: 'center'}} 
+                  >
+                <Alert onClose={lidarFecharSnackbar} severity={snackbarSeverity} sx={{ width: "100%" }}>
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
+
       <FormContainer>
         <IconButton onClick={() => navegar(-1)} style={{ position: "absolute", top: 11, left: 11 }}>
           <ArrowBackIcon />
@@ -192,7 +226,7 @@ const CadastroCliente = () => {
           marginTop={4}
           marginBottom={1}
         >
-          2. Dados básicos
+          2. Dados Básicos
         </Typography>
         <form onSubmit={lidarEnvio}>
           <Grid container spacing={1} marginTop={1}>
@@ -226,46 +260,39 @@ const CadastroCliente = () => {
                       onChange={lidarMudancaCampo}
                       required
                     >
-                      <MenuItem value="">Selecione</MenuItem>
                       <MenuItem value="Masculino">Masculino</MenuItem>
                       <MenuItem value="Feminino">Feminino</MenuItem>
-                      <MenuItem value="Prefiro não dizer">Prefiro não dizer</MenuItem>
+                      <MenuItem value="Outro">Outro</MenuItem>
                     </Select>
                   </FormControl>
                 ) : (
                   <TextField
                     fullWidth
                     variant="standard"
-                    label={field.charAt(0).toUpperCase() + field.slice(1).replace(/([A-Z])/g, ' $1')}
+                    label={field === "dataNascimento" ? "" : field.charAt(0).toUpperCase() + field.slice(1).replace(/([A-Z])/g, ' $1')}
                     name={field}
-                    type={field.includes("senha") ? "password" : field === "dataNascimento" ? "date" : "text"}
                     value={dadosFormulario[field]}
                     onChange={lidarMudancaCampo}
                     margin="dense"
+                    type={field === "dataNascimento" ? "date" : field === "senha" || field === "confirmacaoSenha" ? "password" : "text"}
                     sx={estiloInput}
                     required
-                    InputLabelProps={field === "dataNascimento" ? { shrink: true } : {}}
                   />
                 )}
               </Grid>
             ))}
-            <Grid item xs={12} marginTop={2}>
-              <NextButton type="submit">PRÓXIMO</NextButton>
-            </Grid>
+          </Grid>
+          <Grid container justifyContent="center" marginTop={3}>
+            <NextButton type="submit">PRÓXIMO</NextButton>
           </Grid>
         </form>
       </FormContainer>
-      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={lidarFecharSnackbar}>
-        <Alert onClose={lidarFecharSnackbar} severity={snackbarSeverity}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
     </Container>
   );
 };
 
 CadastroCliente.propTypes = {
-  navegar: PropTypes.func.isRequired,
+  userRole: PropTypes.string,
 };
 
 export default CadastroCliente;

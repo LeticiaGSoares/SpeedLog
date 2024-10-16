@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { Person as PersonIcon, Lock as LockIcon } from "@mui/icons-material";
 import { styled } from "@mui/system";
+import { styled as styledComp} from "styled-components"
 import speedlog from "../imgs/speedlog.png"; 
 import loadingImage from "../imgs/loadingImage.png"; 
 
@@ -80,6 +81,22 @@ const estiloInput = {
   },
 };
 
+const ImgLoads = styledComp.img`
+  margin-bottom: 20px;
+  
+  @media (min-width: 10px) {
+    width: 80%;
+  }
+
+  @media (min-width: 600px) {
+    width: 30%;
+  }
+
+  @media (min-width: 1024px) {
+    width: 20%;
+  }
+`
+
 // Componente de Tela de Carregamento
 const TelaCarregando = ({ loadingImage }) => (
   <Box
@@ -88,6 +105,8 @@ const TelaCarregando = ({ loadingImage }) => (
     justifyContent="center"
     alignItems="center"
     sx={{
+      width: "100%",
+      height: "100vh",
       position: 'fixed',
       top: 0,
       left: 0,
@@ -97,14 +116,9 @@ const TelaCarregando = ({ loadingImage }) => (
       zIndex: 9999,
     }}
   >
-    <img
+    <ImgLoads
       src={loadingImage}
       alt="Carregando"
-      style={{
-        width: '100%',
-        maxWidth: '100%',
-        marginBottom: 20,
-      }}
     />
     <CircularProgress sx={{ color: 'white' }} />
   </Box>
