@@ -18,21 +18,22 @@ import { styled } from "@mui/system";
 import InputMask from "react-input-mask";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import { getStates, getCities } from "@brazilian-utils/brazilian-utils";
 
-const Container = styled(Box)( {
+const Container = styled(Box)({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
   minHeight: "100vh",
 });
 
-const FormContainer = styled(Box)( {
+const FormContainer = styled(Box)({
   width: "100%",
   maxWidth: 400,
   padding: "24px",
 });
 
-const NextButton = styled(Button)( {
+const NextButton = styled(Button)({
   width: 275,
   height: 50,
   borderRadius: 30,
@@ -49,7 +50,7 @@ const NextButton = styled(Button)( {
   },
 });
 
-const BarraDeProgresso = styled(Box)( ({ largura = "0%", cor = "#2cc295" }) => ( {
+const BarraDeProgresso = styled(Box)(({ largura = "0%", cor = "#2cc295" }) => ({
   position: "absolute",
   top: 50,
   left: "50%",
@@ -83,17 +84,18 @@ const estiloInput = {
   },
 };
 
-const validarCPF = (cpf) => /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(cpf);
 const validarEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 const validarTelefone = (telefone) => /^\(\d{2}\) \d{5}-\d{4}$/.test(telefone);
 const validarNome = (nome) => /^[A-Za-zÀ-ÖØ-öø-ÿ\s]{2,}$/.test(nome);
 const validarDataNascimento = (data) => /^\d{4}-\d{2}-\d{2}$/.test(data);
-const validarSenha = (senha) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_\-+=\[\]{}|;:",.<>/?]).{8,}$/.test(senha);
+const validarSenha = (senha) =>
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_\-+=\[\]{}|;:",.<>/?]).{8,}$/.test(
+    senha
+  );
 
 const estadoInicial = {
   nome: "",
   sobrenome: "",
-  cpf: "",
   genero: "",
   email: "",
   numero: "",
@@ -118,9 +120,28 @@ const CadastroCliente = () => {
   const [snackbarMessage, setSnackbarMessage] = React.useState("");
   const [snackbarSeverity, setSnackbarSeverity] = React.useState("success");
   const [progresso, setProgresso] = React.useState("50%");
+  const [cidadesDisponiveis, setCidadesDisponiveis] = React.useState([]);
+  const [estadosDisponiveis, setEstadosDisponiveis] = React.useState([]);
 
   useEffect(() => {
-    const todosCamposPreenchidos = Object.values(dadosFormulario).every((value) => value.trim() !== "");
+    // Inicializar lista de estados
+    const estadosInfo = getStates();
+    setEstadosDisponiveis(estadosInfo);
+  }, []);
+
+  // Atualizar a lista de cidades disponíveis com base no estado selecionado
+  useEffect(() => {
+    if (dadosFormulario.estado) {
+      const novasCidades = getCities(dadosFormulario.estado);
+      setCidadesDisponiveis(novasCidades || []);
+      despachar({ type: "SET_FIELD", field: "cidade", value: "" });
+    }
+  }, [dadosFormulario.estado]);
+
+  useEffect(() => {
+    const todosCamposPreenchidos = Object.values(dadosFormulario).every(
+      (value) => value.trim() !== ""
+    );
     setProgresso(todosCamposPreenchidos ? "75%" : "50%");
   }, [dadosFormulario]);
 
@@ -142,13 +163,6 @@ const CadastroCliente = () => {
       return;
     }
 
-    if (!validarCPF(dadosFormulario.cpf)) {
-      setSnackbarMessage("CPF inválido. Deve estar no formato XXX.XXX.XXX-XX.");
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
-      return;
-    }
-
     if (!validarEmail(dadosFormulario.email)) {
       setSnackbarMessage("E-mail inválido.");
       setSnackbarSeverity("error");
@@ -157,7 +171,9 @@ const CadastroCliente = () => {
     }
 
     if (!validarTelefone(dadosFormulario.numero)) {
-      setSnackbarMessage("Número de celular inválido. Deve estar no formato (99) 99999-9999.");
+      setSnackbarMessage(
+        "Número de celular inválido. Deve estar no formato (99) 99999-9999."
+      );
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
       return;
@@ -181,7 +197,9 @@ const CadastroCliente = () => {
 
     // Validação para o ano de nascimento
     if (dataNascimento.getFullYear() > anoAtual) {
-      setSnackbarMessage("O ano de nascimento não pode ser maior que o ano atual.");
+      setSnackbarMessage(
+        "O ano de nascimento não pode ser maior que o ano atual."
+      );
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
       return;
@@ -202,18 +220,25 @@ const CadastroCliente = () => {
   return (
     <Container>
       <Snackbar
-  open={snackbarOpen}
-  autoHideDuration={4000}
-  onClose={lidarFecharSnackbar}
-                  anchorOrigin={{ vertical: 'top', horizontal: 'center'}} 
-                  >
-                <Alert onClose={lidarFecharSnackbar} severity={snackbarSeverity} sx={{ width: "100%" }}>
-            {snackbarMessage}
-          </Alert>
-        </Snackbar>
+        open={snackbarOpen}
+        autoHideDuration={4000}
+        onClose={lidarFecharSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={lidarFecharSnackbar}
+          severity={snackbarSeverity}
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
 
       <FormContainer>
-        <IconButton onClick={() => navegar(-1)} style={{ position: "absolute", top: 11, left: 11 }}>
+        <IconButton
+          onClick={() => navegar(-1)}
+          style={{ position: "absolute", top: 11, left: 11 }}
+        >
           <ArrowBackIcon />
         </IconButton>
         <BarraDeProgresso largura={progresso} cor="#2cc295" />
@@ -232,26 +257,8 @@ const CadastroCliente = () => {
           <Grid container spacing={1} marginTop={1}>
             {Object.keys(estadoInicial).map((field) => (
               <Grid item xs={12} sm={field === "genero" ? 12 : 6} key={field}>
-                {field === "cpf" || field === "numero" ? (
-                  <InputMask
-                    mask={field === "cpf" ? "999.999.999-99" : "(99) 99999-9999"}
-                    value={dadosFormulario[field]}
-                    onChange={lidarMudancaCampo}
-                  >
-                    {(inputProps) => (
-                      <TextField
-                        {...inputProps}
-                        fullWidth
-                        variant="standard"
-                        label={field === "cpf" ? "CPF" : "Número Celular"}
-                        name={field}
-                        margin="dense"
-                        sx={estiloInput}
-                        required
-                      />
-                    )}
-                  </InputMask>
-                ) : field === "genero" ? (
+                {field === "genero" ? (
+                <>
                   <FormControl fullWidth variant="standard" margin="dense">
                     <InputLabel>Gênero</InputLabel>
                     <Select
@@ -265,16 +272,63 @@ const CadastroCliente = () => {
                       <MenuItem value="Outro">Outro</MenuItem>
                     </Select>
                   </FormControl>
+                  <Grid item xs={12} sm={6}>
+                  <FormControl fullWidth variant="standard" margin="dense">
+                    <InputLabel>Estado</InputLabel>
+                    <Select
+                      name="estado"
+                      value={dadosFormulario.estado}
+                      onChange={lidarMudancaCampo}
+                      required
+                    >
+                      {estadosDisponiveis.map((estado) => (
+                        <MenuItem key={estado.code} value={estado.code}>
+                          {estado.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <FormControl fullWidth variant="standard" margin="dense">
+                    <InputLabel>Cidade</InputLabel>
+                    <Select
+                      name="cidade"
+                      value={dadosFormulario.cidade}
+                      onChange={lidarMudancaCampo}
+                      required
+                      disabled={!cidadesDisponiveis.length}
+                    >
+                      {cidadesDisponiveis.map((cidade) => (
+                        <MenuItem key={cidade} value={cidade}>
+                          {cidade}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                </>
                 ) : (
                   <TextField
                     fullWidth
                     variant="standard"
-                    label={field === "dataNascimento" ? "" : field.charAt(0).toUpperCase() + field.slice(1).replace(/([A-Z])/g, ' $1')}
+                    label={
+                      field === "dataNascimento"
+                        ? ""
+                        : field.charAt(0).toUpperCase() +
+                          field.slice(1).replace(/([A-Z])/g, " $1")
+                    }
                     name={field}
                     value={dadosFormulario[field]}
                     onChange={lidarMudancaCampo}
                     margin="dense"
-                    type={field === "dataNascimento" ? "date" : field === "senha" || field === "confirmacaoSenha" ? "password" : "text"}
+                    type={
+                      field === "dataNascimento"
+                        ? "date"
+                        : field === "senha" || field === "confirmacaoSenha"
+                        ? "password"
+                        : "text"
+                    }
                     sx={estiloInput}
                     required
                   />
