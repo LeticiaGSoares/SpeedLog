@@ -13,47 +13,56 @@ import theme from '../../theme'
 import styled from 'styled-components';
 
 const StyledList = styled(List)`
+  display: flex;
+  flex-direction: row;
   padding: 0;
   background-color: ${theme.colors.greenRegular}; // Cor de fundo
 `;
 
-const StyledListItemButton = styled(ListItemButton)`
-  &:hover {
-    background-color: ${theme.colors.greenLight}; // Cor ao passar o mouse
-  }
+const StyledListItem = styled(ListItem)`
+  &:active{
+    p, svg{
+      color: white;
+    }
+  }  
 `;
+
+const StyledListItemIcon = styled(ListItemIcon)`
+  display:flex;
+  flex-direction: column;
+`
 
 
 const Navbar = () => {
   return (
     <Box sx={{ width: '100%', maxWidth: 360, bgcolor: theme.colors.greenRegular }}>
       <nav aria-label="main mailbox folders">
-        <List>
-          <ListItem disablePadding>
+        <StyledList disablePadding>
+          <StyledListItem disablePadding>
             <ListItemButton>
-              <ListItemIcon>
+              <StyledListItemIcon>
                 <HomeIcon />
-              </ListItemIcon>
-              <ListItemText primary="Home" />
+                <ListItemText secondary="Home" />
+              </StyledListItemIcon>
             </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
+          </StyledListItem>
+          <StyledListItem disablePadding>
             <ListItemButton>
-              <ListItemIcon>
+              <StyledListItemIcon>
                 <HistoryIcon />
-              </ListItemIcon>
-              <ListItemText primary="Histórico" />
+                <ListItemText secondary="Histórico" />
+              </StyledListItemIcon>
             </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
+          </StyledListItem>
+          <StyledListItem disablePadding>
             <ListItemButton>
-              <ListItemIcon>
+              <StyledListItemIcon>
                 <SettingsIcon />
-              </ListItemIcon>
-              <ListItemText primary="Config." />
+                <ListItemText secondary="Config." />
+              </StyledListItemIcon>
             </ListItemButton>
-          </ListItem>
-        </List>
+          </StyledListItem>
+        </StyledList>
       </nav>
     </Box>
   );
