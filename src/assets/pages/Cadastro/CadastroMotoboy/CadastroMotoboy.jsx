@@ -8,31 +8,27 @@ import {
   IconButton,
   Snackbar,
   Alert,
-  MenuItem,
-  Select,
-  InputLabel,
-  FormControl,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { styled } from "@mui/system";
-import InputMask from "react-input-mask";
+import InputMask from "react-input-mask"; // Mantivemos para formatar o celular
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const Container = styled(Box)({
+const Container = styled(Box)( {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
   minHeight: "100vh",
 });
 
-const FormContainer = styled(Box)({
+const FormContainer = styled(Box)( {
   width: "100%",
   maxWidth: 400,
   padding: "24px",
 });
 
-const NextButton = styled(Button)({
+const NextButton = styled(Button)( {
   width: 275,
   height: 50,
   borderRadius: 30,
@@ -84,34 +80,29 @@ const estiloInput = {
   },
 };
 
-const validarCPF = (cpf) => /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(cpf);
 const validarEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-const validarTelefone = (telefone) => /^\(\d{2}\) \d{5}-\d{4}$/.test(telefone);
+const validarSenha = (senha) =>
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}$/.test(senha);
 
 const estadoInicial = {
   nome: "",
-  cpf: "",
   email: "",
-  numero: "",
+  senha: "",
+  confirmacaoSenha: "",
+  celular: "",
   dataNascimento: "",
-  cnh: "",
-  placa: "",
-  modelo: "",
-  fotoMoto: null, // Para a foto da moto
 };
 
 const redutor = (estado, acao) => {
   switch (acao.type) {
     case "SET_FIELD":
       return { ...estado, [acao.field]: acao.value };
-    case "SET_FILE":
-      return { ...estado, fotoMoto: acao.file };
     default:
       return estado;
   }
 };
 
-const CadastroCliente = () => {
+const CadastroMotoboy = () => {
   const navegar = useNavigate();
   const [dadosFormulario, despachar] = useReducer(redutor, estadoInicial);
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
@@ -133,36 +124,35 @@ const CadastroCliente = () => {
 
   const lidarEnvio = (e) => {
     e.preventDefault();
-  
-    // Validações dos campos
+
     if (!dadosFormulario.nome) {
       setSnackbarMessage("Por favor, preencha seu nome.");
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
       return;
     }
-  
-    if (!validarCPF(dadosFormulario.cpf)) {
-      setSnackbarMessage("CPF inválido. Deve estar no formato XXX.XXX.XXX-XX.");
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
-      return;
-    }
-  
+
     if (!validarEmail(dadosFormulario.email)) {
       setSnackbarMessage("E-mail inválido.");
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
       return;
     }
-  
-    if (!validarTelefone(dadosFormulario.numero)) {
-      setSnackbarMessage("Número de celular inválido. Deve estar no formato (99) 99999-9999.");
+
+    if (!validarSenha(dadosFormulario.senha)) {
+      setSnackbarMessage("A senha deve ter pelo menos 8 caracteres, incluindo uma letra maiúscula, uma letra minúscula e um caractere especial.");
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
       return;
     }
-  
+
+    if (dadosFormulario.senha !== dadosFormulario.confirmacaoSenha) {
+      setSnackbarMessage("As senhas não coincidem.");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+      return;
+    }
+
     const dataNascimento = new Date(dadosFormulario.dataNascimento);
     const anoAtual = new Date().getFullYear();
     if (dataNascimento.getFullYear() > anoAtual) {
@@ -171,24 +161,15 @@ const CadastroCliente = () => {
       setSnackbarOpen(true);
       return;
     }
-  
-    // Se todas as validações passaram, navegue para a próxima página
-    setSnackbarMessage("Cadastro realizado com sucesso!");
-    setSnackbarSeverity("success");
-    setSnackbarOpen(true);
-    
-    // Navegue para a próxima página apenas aqui, após todas as validações
+
+
     setTimeout(() => {
-      navegar("/foto-cliente");
+      navegar("/dados-moto");
     }, 2000);
   };
 
   const lidarFecharSnackbar = () => {
     setSnackbarOpen(false);
-  };
-
-  const lidarMudancaArquivo = (e) => {
-    despachar({ type: "SET_FILE", file: e.target.files[0] });
   };
 
   return (
@@ -205,7 +186,7 @@ const CadastroCliente = () => {
       </Snackbar>
 
       <FormContainer>
-        <IconButton onClick={() => navegar(-1)} style={{ position: "absolute", top: 11, left: 11 }}>
+        <IconButton onClick={() => navegar("/escolha-de-perfil")} style={{ position: "absolute", top: 11, left: 11 }}>
           <ArrowBackIcon />
         </IconButton>
         <BarraDeProgresso largura={progresso} cor="#2cc295" />
@@ -214,14 +195,14 @@ const CadastroCliente = () => {
           component="h2"
           fontWeight="bold"
           color="black"
+          marginTop={-20}
           paddingLeft={3}
-          marginTop={4}
           marginBottom={1}
         >
           2. Dados Básicos
         </Typography>
         <form onSubmit={lidarEnvio}>
-          <Grid container spacing={1} marginTop={1}>
+          <Grid container spacing={2} marginTop={1}>
             <Grid item xs={12}>
               <TextField
                 fullWidth
@@ -234,26 +215,6 @@ const CadastroCliente = () => {
                 sx={estiloInput}
                 required
               />
-            </Grid>
-            <Grid item xs={12}>
-              <InputMask
-                mask="999.999.999-99"
-                value={dadosFormulario.cpf}
-                onChange={lidarMudancaCampo}
-              >
-                {(inputProps) => (
-                  <TextField
-                    {...inputProps}
-                    fullWidth
-                    variant="standard"
-                    label="CPF"
-                    name="cpf"
-                    margin="dense"
-                    sx={estiloInput}
-                    required
-                  />
-                )}
-              </InputMask>
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -269,24 +230,52 @@ const CadastroCliente = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <InputMask
-                mask="(99) 99999-9999"
-                value={dadosFormulario.numero}
+              <TextField
+                fullWidth
+                variant="standard"
+                label="Celular"
+                name="celular"
+                value={dadosFormulario.celular}
                 onChange={lidarMudancaCampo}
-              >
-                {(inputProps) => (
-                  <TextField
-                    {...inputProps}
-                    fullWidth
-                    variant="standard"
-                    label="Número"
-                    name="numero"
-                    margin="dense"
-                    sx={estiloInput}
-                    required
-                  />
-                )}
-              </InputMask>
+                margin="dense"
+                sx={estiloInput}
+                required
+                InputProps={{
+                  inputComponent: InputMask,
+                  inputProps: {
+                    mask: "(99) 99999-9999", 
+                    maskChar: null,
+                  },
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                variant="standard"
+                label="Senha"
+                name="senha"
+                type="password"
+                value={dadosFormulario.senha}
+                onChange={lidarMudancaCampo}
+                margin="dense"
+                sx={estiloInput}
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                variant="standard"
+                label="Confirmação de Senha"
+                name="confirmacaoSenha"
+                type="password"
+                value={dadosFormulario.confirmacaoSenha}
+                onChange={lidarMudancaCampo}
+                margin="dense"
+                sx={estiloInput}
+                required
+              />
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -302,53 +291,8 @@ const CadastroCliente = () => {
                 required
               />
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                variant="standard"
-                label="CNH"
-                name="cnh"
-                value={dadosFormulario.cnh}
-                onChange={lidarMudancaCampo}
-                margin="dense"
-                sx={estiloInput}
-                required
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                variant="standard"
-                label="Placa"
-                name="placa"
-                value={dadosFormulario.placa}
-                onChange={lidarMudancaCampo}
-                margin="dense"
-                sx={estiloInput}
-                required
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                variant="standard"
-                label="Modelo"
-                name="modelo"
-                value={dadosFormulario.modelo}
-                onChange={lidarMudancaCampo}
-                margin="dense"
-                sx={estiloInput}
-                required
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <InputLabel id="foto-moto-label">Foto da Moto</InputLabel>
-              <input type="file" onChange={lidarMudancaArquivo} />
-            </Grid>
-            <Grid item xs={12}>
-              <NextButton variant="contained" type="submit">
-                PRÓXIMO
-              </NextButton>
+            <Grid item xs={12} display="flex" justifyContent="center">
+              <NextButton type="submit">PRÓXIMO</NextButton>
             </Grid>
           </Grid>
         </form>
@@ -357,8 +301,13 @@ const CadastroCliente = () => {
   );
 };
 
-CadastroCliente.propTypes = {
-  history: PropTypes.object,
+CadastroMotoboy.propTypes = {
+  nome: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  celular: PropTypes.string.isRequired,
+  senha: PropTypes.string.isRequired,
+  confirmacaoSenha: PropTypes.string.isRequired,
+  dataNascimento: PropTypes.string.isRequired,
 };
 
-export default CadastroCliente;
+export default CadastroMotoboy;

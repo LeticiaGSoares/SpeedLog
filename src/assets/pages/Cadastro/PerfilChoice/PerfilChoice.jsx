@@ -10,6 +10,8 @@ import {
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { styled } from "@mui/system";
+import motoboySVG from "../../imgs/motoboy.svg";
+import clienteSVG from "../../imgs/cliente.svg";
 
 const BotaoProximo = styled(Button)({
   position: "absolute",
@@ -29,6 +31,8 @@ const BotaoProximo = styled(Button)({
 const ImagemEstilizada = styled("img")({
   position: "absolute",
   objectFit: "cover",
+  
+  
 });
 
 const TituloEstilizado = styled(Typography)(({ color }) => ({
@@ -113,11 +117,11 @@ const EscolhaDePerfil = () => {
                   }}
                 >
                   <ImagemEstilizada
-                    src="https://via.placeholder.com/130x120"
+                    src={perfil === "Cliente" ? clienteSVG : motoboySVG}
                     alt={`Imagem de ${perfil}`}
-                    width={130}
-                    height={120}
-                    style={{ top: 13, left: 58 }}
+                    width={230}
+                    height={130}
+                    style={{ left: 0, right: 0, top: 10 }}
                   />
                   <TituloEstilizado
                     variant="h6"

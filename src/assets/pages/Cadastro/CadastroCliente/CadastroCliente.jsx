@@ -124,12 +124,11 @@ const CadastroCliente = () => {
   const [estadosDisponiveis, setEstadosDisponiveis] = React.useState([]);
 
   useEffect(() => {
-    // Inicializar lista de estados
     const estadosInfo = getStates();
     setEstadosDisponiveis(estadosInfo);
   }, []);
 
-  // Atualizar a lista de cidades disponíveis com base no estado selecionado
+
   useEffect(() => {
     if (dadosFormulario.estado) {
       const novasCidades = getCities(dadosFormulario.estado);
@@ -195,7 +194,7 @@ const CadastroCliente = () => {
       return;
     }
 
-    // Validação para o ano de nascimento
+    
     if (dataNascimento.getFullYear() > anoAtual) {
       setSnackbarMessage(
         "O ano de nascimento não pode ser maior que o ano atual."
