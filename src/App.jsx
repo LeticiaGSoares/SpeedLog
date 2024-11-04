@@ -1,25 +1,32 @@
 import * as React from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import ErrorPage from './assets/pages/ErrorPage/ErrorPage';
-import Navbar from './assets/components/Navbar/Navbar';
+import NotFound from './assets/pages/NotFound/NotFound'
+import Protected from './assets/pages/Protected/Protected';
+import Dashboard from './assets/pages/Dashboard/Dashboard';
+import MessageDisplay from './assets/components/Message/MessageDisplay.jsx';
+import { MessageProvider } from './assets/components/Message/MessageContext.jsx';
 
-function App() {
+import {
+    Login,
+} from './assets/routes/index.js'
 
+
+const App = () => {
   return (
-    <>
+    <MessageProvider>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={
-            <>
-              <ErrorPage />
-              <Navbar/>
-            </>
-          } 
-          />
-        </Routes>
+            <MessageDisplay />
+            <Routes>
+                <Route path='/' element={<Login/>}/>
+                <Route path='/u' element={
+                    <Protected>
+                        <Dashboard />
+                    </Protected>
+              }/>
+            </Routes>
       </BrowserRouter>
-    </>
-  )
-}
+    </MessageProvider>
+  );
+};
 
 export default App
