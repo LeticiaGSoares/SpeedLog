@@ -41,6 +41,7 @@ const Container = styled(Box)(() => ({
   justifyContent: "center",
   alignItems: "center",
   minHeight: "100vh",
+  padding: '16px', // Padding para dispositivos móveis
 }));
 
 const FormContainer = styled(Box)(() => ({
@@ -51,7 +52,7 @@ const FormContainer = styled(Box)(() => ({
 }));
 
 const NextButton = styled(Button)(() => ({
-  width: 275,
+  width: "100%", // Ajuste para que o botão ocupe 100% do container
   height: 50,
   borderRadius: 30,
   backgroundColor: "#2cc295",
@@ -59,7 +60,7 @@ const NextButton = styled(Button)(() => ({
   fontFamily: "Montserrat, Helvetica",
   fontSize: 16,
   color: "white",
-  marginLeft: "25px",
+  marginTop: "20px",
   textTransform: "none",
   transition: "transform 0.3s",
   "&:hover": {
@@ -68,13 +69,13 @@ const NextButton = styled(Button)(() => ({
 }));
 
 const CircularImageUpload = styled(Avatar)(({ src }) => ({
-  width: 250, 
+  width: 250,
   height: 250,
   margin: "auto",
   border: "2px solid #2cc295",
   backgroundColor: src ? "transparent" : "#f0f0f0",
   position: "relative",
-  borderRadius: "50%", 
+  borderRadius: "50%",
 }));
 
 const HiddenInput = styled("input")({
@@ -105,7 +106,6 @@ const getCroppedImg = (imageSrc, pixelCrop) => {
         pixelCrop.height
       );
 
-      
       canvas.toBlob((blob) => {
         if (!blob) {
           reject(new Error("Canvas is empty"));
@@ -129,7 +129,7 @@ const CadastroFotoCliente = () => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const [foto, setFoto] = useState(null);
-  const [progresso, setProgresso] = useState("100%"); 
+  const [progresso, setProgresso] = useState("100%");
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [image, setImage] = useState(null);
   const [cropperVisible, setCropperVisible] = useState(false);
@@ -145,12 +145,12 @@ const CadastroFotoCliente = () => {
       return;
     }
     const croppedImageUrl = await getCroppedImg(image, croppedAreaPixels);
-    console.log(croppedImageUrl); 
+    console.log(croppedImageUrl);
     setSnackbarMessage("Foto enviada com sucesso!");
     setSnackbarSeverity("success");
     setSnackbarOpen(true);
     setTimeout(() => {
-      navegar("/sucesso"); 
+      navegar("/sucesso");
     }, 2000);
   };
 
@@ -171,12 +171,10 @@ const CadastroFotoCliente = () => {
   };
 
   const onCropComplete = (crop) => {
-    
     setCroppedAreaPixels(crop);
   };
   const handleCropConfirm = async () => {
     if (croppedAreaPixels) {
-      
       const croppedImageUrl = await getCroppedImg(image, croppedAreaPixels);
       setFoto(croppedImageUrl);
       setCropperVisible(false);
@@ -200,7 +198,7 @@ const CadastroFotoCliente = () => {
         </Alert>
       </Snackbar>
 
-      <FormContainer top={-400}>
+      <FormContainer>
         <IconButton
           onClick={() => navegar(-1)}
           style={{ position: "absolute", top: 10, left: 11 }}
@@ -215,47 +213,50 @@ const CadastroFotoCliente = () => {
           color="black"
           paddingLeft={3}
           marginTop={5}
-          marginBottom={15}
+          marginBottom={2}
         >
           3. Adicionar Foto de Perfil
         </Typography>
+        <Typography variant="body2" color="textSecondary" align="center" marginBottom={2}>
+          Selecione uma foto de perfil adequada. Você pode cortá-la após o upload.
+        </Typography>
 
         {cropperVisible ? (
-      <Box style={{ position: "relative", height: "300px", width: "300px" }}>
-        <Cropper
-          image={image}
-          crop={crop}
-          zoom={zoom}
-          aspect={1} 
-          onCropComplete={(crop, pixels) => {
-            onCropComplete(pixels); 
-          }}
-          onCropChange={(newCrop) => setCrop(newCrop)}
-          onZoomChange={(newZoom) => setZoom(newZoom)}
-          style={{ containerStyle: { height: "100%", width: "100%" } }}
-        />
-        <Button variant="contained" onClick={handleCropConfirm}>
-          Confirmar
-        </Button>
-      </Box>
-    ) : (
-      <Grid container justifyContent="center" marginTop={2}>
-        <label htmlFor="upload-button-file">
-          <CircularImageUpload
-            src={foto}
-            alt="Foto de perfil"
-            component="span"
-          />
-          <HiddenInput
-            accept="image/*"
-            id="upload-button-file"
-            type="file"
-            onChange={lidarMudancaFoto}
-          />
-        </label>
-      </Grid>
-    )}
-        <Grid container justifyContent="center" marginTop={35} marginBottom={-200}>
+          <Box style={{ position: "relative", height: "300px", width: "100%" }}>
+            <Cropper
+              image={image}
+              crop={crop}
+              zoom={zoom}
+              aspect={1}
+              onCropComplete={(crop, pixels) => {
+                onCropComplete(pixels);
+              }}
+              onCropChange={(newCrop) => setCrop(newCrop)}
+              onZoomChange={(newZoom) => setZoom(newZoom)}
+              style={{ containerStyle: { height: "100%", width: "100%" } }}
+            />
+            <Button variant="contained" onClick={handleCropConfirm} style={{ position: 'absolute', bottom: '10px', right: '10px' }}>
+              Confirmar
+            </Button>
+          </Box>
+        ) : (
+          <Grid container justifyContent="center" marginTop={2}>
+            <label htmlFor="upload-button-file">
+              <CircularImageUpload
+                src={foto}
+                alt="Foto de perfil"
+                component="span"
+              />
+              <HiddenInput
+                accept="image/*"
+                id="upload-button-file"
+                type="file"
+                onChange={lidarMudancaFoto}
+              />
+            </label>
+          </Grid>
+        )}
+        <Grid container justifyContent="center" marginTop={2}>
           <NextButton type="submit" onClick={lidarEnvio}>
             PRÓXIMO
           </NextButton>

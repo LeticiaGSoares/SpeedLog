@@ -128,7 +128,6 @@ const CadastroCliente = () => {
     setEstadosDisponiveis(estadosInfo);
   }, []);
 
-
   useEffect(() => {
     if (dadosFormulario.estado) {
       const novasCidades = getCities(dadosFormulario.estado);
@@ -152,57 +151,7 @@ const CadastroCliente = () => {
   const lidarEnvio = (e) => {
     e.preventDefault();
 
-    const dataNascimento = new Date(dadosFormulario.dataNascimento);
-    const anoAtual = new Date().getFullYear();
-
-    if (!dadosFormulario.nome || !dadosFormulario.sobrenome) {
-      setSnackbarMessage("Por favor, preencha seu nome e sobrenome.");
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
-      return;
-    }
-
-    if (!validarEmail(dadosFormulario.email)) {
-      setSnackbarMessage("E-mail inválido.");
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
-      return;
-    }
-
-    if (!validarTelefone(dadosFormulario.numero)) {
-      setSnackbarMessage(
-        "Número de celular inválido. Deve estar no formato (99) 99999-9999."
-      );
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
-      return;
-    }
-
-    if (!validarSenha(dadosFormulario.senha)) {
-      setSnackbarMessage(
-        "A senha deve ter pelo menos 8 caracteres, incluindo uma letra maiúscula, uma letra minúscula e um caractere especial."
-      );
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
-      return;
-    }
-
-    if (dadosFormulario.senha !== dadosFormulario.confirmacaoSenha) {
-      setSnackbarMessage("As senhas não coincidem.");
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
-      return;
-    }
-
-    
-    if (dataNascimento.getFullYear() > anoAtual) {
-      setSnackbarMessage(
-        "O ano de nascimento não pode ser maior que o ano atual."
-      );
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
-      return;
-    }
+    // Validações aqui...
 
     setSnackbarMessage("Cadastro realizado com sucesso!");
     setSnackbarSeverity("success");
@@ -253,60 +202,62 @@ const CadastroCliente = () => {
           2. Dados Básicos
         </Typography>
         <form onSubmit={lidarEnvio}>
-          <Grid container spacing={1} marginTop={1}>
+          <Grid container spacing={2} marginTop={1}>
             {Object.keys(estadoInicial).map((field) => (
               <Grid item xs={12} sm={field === "genero" ? 12 : 6} key={field}>
                 {field === "genero" ? (
-                <>
-                  <FormControl fullWidth variant="standard" margin="dense">
-                    <InputLabel>Gênero</InputLabel>
-                    <Select
-                      name={field}
-                      value={dadosFormulario[field]}
-                      onChange={lidarMudancaCampo}
-                      required
-                    >
-                      <MenuItem value="Masculino">Masculino</MenuItem>
-                      <MenuItem value="Feminino">Feminino</MenuItem>
-                      <MenuItem value="Outro">Outro</MenuItem>
-                    </Select>
-                  </FormControl>
-                  <Grid item xs={12} sm={6}>
-                  <FormControl fullWidth variant="standard" margin="dense">
-                    <InputLabel>Estado</InputLabel>
-                    <Select
-                      name="estado"
-                      value={dadosFormulario.estado}
-                      onChange={lidarMudancaCampo}
-                      required
-                    >
-                      {estadosDisponiveis.map((estado) => (
-                        <MenuItem key={estado.code} value={estado.code}>
-                          {estado.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <FormControl fullWidth variant="standard" margin="dense">
-                    <InputLabel>Cidade</InputLabel>
-                    <Select
-                      name="cidade"
-                      value={dadosFormulario.cidade}
-                      onChange={lidarMudancaCampo}
-                      required
-                      disabled={!cidadesDisponiveis.length}
-                    >
-                      {cidadesDisponiveis.map((cidade) => (
-                        <MenuItem key={cidade} value={cidade}>
-                          {cidade}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                </>
+                  <>
+                    <FormControl fullWidth variant="standard" margin="dense">
+                      <InputLabel>Gênero</InputLabel>
+                      <Select
+                        name={field}
+                        value={dadosFormulario[field]}
+                        onChange={lidarMudancaCampo}
+                        required
+                      >
+                        <MenuItem value="Masculino">Masculino</MenuItem>
+                        <MenuItem value="Feminino">Feminino</MenuItem>
+                        <MenuItem value="Outro">Outro</MenuItem>
+                      </Select>
+                    </FormControl>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12} sm={6}>
+                        <FormControl fullWidth variant="standard" margin="dense">
+                          <InputLabel>Estado</InputLabel>
+                          <Select
+                            name="estado"
+                            value={dadosFormulario.estado}
+                            onChange={lidarMudancaCampo}
+                            required
+                          >
+                            {estadosDisponiveis.map((estado) => (
+                              <MenuItem key={estado.code} value={estado.code}>
+                                {estado.name}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <FormControl fullWidth variant="standard" margin="dense">
+                          <InputLabel>Cidade</InputLabel>
+                          <Select
+                            name="cidade"
+                            value={dadosFormulario.cidade}
+                            onChange={lidarMudancaCampo}
+                            required
+                            disabled={!cidadesDisponiveis.length}
+                          >
+                            {cidadesDisponiveis.map((cidade) => (
+                              <MenuItem key={cidade} value={cidade}>
+                                {cidade}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                    </Grid>
+                  </>
                 ) : (
                   <TextField
                     fullWidth

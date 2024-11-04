@@ -195,7 +195,7 @@ const CadastroMotoboy = () => {
           component="h2"
           fontWeight="bold"
           color="black"
-          marginTop={-20}
+          marginTop={5}
           paddingLeft={3}
           marginBottom={1}
         >
