@@ -15,22 +15,26 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { styled } from "@mui/system";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import MaskedInput from 'react-text-mask';
 
-const Container = styled(Box)({
+const Container = styled(Box)(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
   minHeight: "100vh",
-});
+  padding: theme.spacing(2),
+}));
 
-const FormContainer = styled(Box)({
+const FormContainer = styled(Box)(({ theme }) => ({
   width: "100%",
   maxWidth: 400,
-  padding: "24px",
-});
+  padding: theme.spacing(3),
+  borderRadius: 8,
+  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+}));
 
 const NextButton = styled(Button)({
-  width: 275,
+  width: "100%",
   height: 50,
   borderRadius: 30,
   backgroundColor: "#2cc295",
@@ -139,21 +143,21 @@ const DetalhesMoto = () => {
 
   const lidarEnvio = (e) => {
     e.preventDefault();
-  
+
     if (!dadosFormulario.placa) {
       setSnackbarMessage("Por favor, preencha a placa.");
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
       return;
     }
-  
+
     if (!dadosFormulario.modelo) {
       setSnackbarMessage("Por favor, preencha o modelo.");
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
       return;
     }
-  
+
     if (!dadosFormulario.fotoMoto) {
       setSnackbarMessage("Por favor, carregue uma foto da moto.");
       setSnackbarSeverity("error");
@@ -161,14 +165,14 @@ const DetalhesMoto = () => {
       return;
     }
     setProgresso("100%");
-    
+
     setLoading(true);
     setTimeout(() => {
       setSnackbarMessage("Dados da moto cadastrados com sucesso!");
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
       setLoading(false);
-  
+
       setTimeout(() => {
         navegar("/pagina-inicial");
       }, 2000);
@@ -212,6 +216,17 @@ const DetalhesMoto = () => {
     }
   };
 
+  const mascaraPlaca = [
+    /[A-Z]/,
+    /[A-Z]/,
+    /[A-Z]/,
+    '-',
+    /[0-9]/,
+    /[0-9]/,
+    /[0-9]/,
+    /[0-9]/,
+  ];
+
   return (
     <Container>
       <Snackbar
@@ -243,7 +258,7 @@ const DetalhesMoto = () => {
           fontWeight="bold"
           color="black"
           paddingLeft={3}
-          marginTop={-32}
+          marginTop={2}
           marginBottom={1}
         >
           3. Dados da Moto
@@ -259,6 +274,13 @@ const DetalhesMoto = () => {
                 value={dadosFormulario.placa}
                 onChange={lidarMudancaCampo}
                 margin="dense"
+                InputProps={{
+                  inputComponent: MaskedInput,
+                  inputProps: {
+                    mask: mascaraPlaca,
+                    placeholder: 'AAA-0000',
+                  },
+                }}
                 sx={estiloInput}
                 required
               />
@@ -300,7 +322,13 @@ const DetalhesMoto = () => {
                 <img
                   src={dadosFormulario.previewFoto}
                   alt="Pré-visualização"
-                  style={{ maxWidth: "100%", borderRadius: 8, marginTop: 10 }}
+                  style={{
+                    maxWidth: "100%",
+                    height: "auto",
+                    borderRadius: 8,
+                    marginTop: 10,
+                    objectFit: "contain",
+                  }}
                 />
               </Grid>
             )}

@@ -13,10 +13,11 @@ import { styled } from "@mui/system";
 import motoboySVG from "../../imgs/motoboy.svg";
 import clienteSVG from "../../imgs/cliente.svg";
 
-const BotaoProximo = styled(Button)({
+const BotaoProximo = styled(Button)(({ theme }) => ({
   position: "absolute",
-  top: 750,
-  left: 43,
+  bottom: 30,
+  left: "50%",
+  transform: "translateX(-50%)",
   width: 275,
   height: 50,
   borderRadius: 30,
@@ -26,13 +27,11 @@ const BotaoProximo = styled(Button)({
   fontSize: 16,
   color: "white",
   textTransform: "none",
-});
+}));
 
 const ImagemEstilizada = styled("img")({
   position: "absolute",
   objectFit: "cover",
-  
-  
 });
 
 const TituloEstilizado = styled(Typography)(({ color }) => ({
@@ -63,7 +62,7 @@ const BarraDeProgresso = styled(Box)(({ largura }) => ({
   },
 }));
 
-const perfis = ["Cliente", "Motoboy"];
+const perfis = ["Usuário", "Entregador"]; //Pra modificar o nome Julio 
 
 const EscolhaDePerfil = () => {
   const [perfilSelecionado, setPerfilSelecionado] = useState(null);
@@ -75,7 +74,7 @@ const EscolhaDePerfil = () => {
 
   const irParaProximo = () => {
     if (perfilSelecionado) {
-      const path = perfilSelecionado === "Cliente" ? "/cadastro-cliente" : "/cadastro-motoboy";
+      const path = perfilSelecionado === "Usuário" ? "/cadastro-cliente" : "/cadastro-motoboy";
       navigate(path);
     }
   };
@@ -87,8 +86,8 @@ const EscolhaDePerfil = () => {
   const larguraBarra = perfilSelecionado ? "50%" : "25%";
 
   return (
-    <Box display="flex" justifyContent="center" width="100%" height="100vh" bgcolor="white">
-      <Box position="relative" width="100%" maxWidth={360} height="100%" bgcolor="white" overflow="hidden">
+    <Box display="flex" justifyContent="center" width="100%" minHeight="100vh" bgcolor="white" overflow="auto">
+      <Box position="relative" width="100%" maxWidth={360} bgcolor="white" overflow="hidden" pb={10}>
         <BarraDeProgresso largura={larguraBarra} />
 
         <TituloEstilizado variant="h6" color="#8f9799" sx={{ top: 90, left: 43 }}>
@@ -117,7 +116,7 @@ const EscolhaDePerfil = () => {
                   }}
                 >
                   <ImagemEstilizada
-                    src={perfil === "Cliente" ? clienteSVG : motoboySVG}
+                    src={perfil === "Usuário" ? clienteSVG : motoboySVG}
                     alt={`Imagem de ${perfil}`}
                     width={230}
                     height={130}
@@ -126,7 +125,7 @@ const EscolhaDePerfil = () => {
                   <TituloEstilizado
                     variant="h6"
                     color={perfilSelecionado === perfil ? "#2cc295" : "#969e9f"}
-                    sx={{ top: 170, left: perfil === "Cliente" ? 94 : 82 }}
+                    sx={{ top: -36, left: perfil === "Usuário" ? 80 : 70 }}
                   >
                     {perfil}
                   </TituloEstilizado>
@@ -140,9 +139,11 @@ const EscolhaDePerfil = () => {
           <ArrowBackIcon />
         </IconButton>
 
-        <BotaoProximo variant="contained" onClick={irParaProximo} disabled={!perfilSelecionado}>
-          PRÓXIMO
-        </BotaoProximo>
+        <Box position="absolute" bottom={0} left={0} right={0} p={2}>
+          <BotaoProximo variant="contained" onClick={irParaProximo} disabled={!perfilSelecionado}>
+            PRÓXIMO
+          </BotaoProximo>
+        </Box>
       </Box>
     </Box>
   );
