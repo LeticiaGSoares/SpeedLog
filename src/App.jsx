@@ -7,6 +7,7 @@ import { MessageProvider } from './assets/components/Message/MessageContext.jsx'
 import {
     Login, AutenticacaoRouter
 } from './assets/routes/index.js'
+import Home from './assets/pages/Home/Home.jsx';
 
 
 const App = () => {
@@ -16,6 +17,7 @@ const App = () => {
             <MessageDisplay />
             <Routes>
                 <Route path="/*" element={<AutenticacaoRouter />} />
+                <Route path="/home" element={<Home/>}/>
             </Routes>
       </BrowserRouter>
     </MessageProvider>
