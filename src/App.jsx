@@ -1,4 +1,5 @@
 import * as React from "react";
+import styled from "styled-components";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NotFound from "./assets/pages/NotFound/NotFound";
 import Protected from "./assets/pages/Protected/Protected";
@@ -8,6 +9,7 @@ import { MessageProvider } from "./assets/components/Message/MessageContext.jsx"
 
 import { Login } from "./assets/routes/index.js";
 import Navbar from "./assets/components/Navbar/Navbar";
+import Home from "./assets/pages/Home/Home";
 
 const App = () => {
   return (
@@ -24,13 +26,15 @@ const App = () => {
               </Protected>
             }
           />
-          <Route path="/home" 
-            element={ 
+          <Route
+            path="/home"
+            element={
               <>
-                
-                <Navbar/>
+                  <Home />
+                  <Navbar />
               </>
-            }/>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </MessageProvider>

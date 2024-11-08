@@ -1,0 +1,18 @@
+* {
+    gap: 0;
+    margin: 0;
+    font-family: "Montserrat", sans-serif !important;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body
+#root {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: space-between;
+    overflow-x: hidden;
+}

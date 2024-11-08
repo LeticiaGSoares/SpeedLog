@@ -29,6 +29,7 @@ const StyledListItem = styled(ListItem)`
 `;
 
 const StyledLink = styled("a")`
+  width: 100%;
   text-decoration: none;
 `;
 
@@ -43,34 +44,34 @@ const Navbar = () => {
       <nav aria-label="main mailbox folders">
         <StyledList disablePadding>
           <StyledListItem disablePadding>
-            <ListItemButton>
-              <StyledListItemIcon>
-                <HomeIcon />
-                <StyledLink href="/inicio">
+            <StyledLink href="/home">
+              <ListItemButton>
+                <StyledListItemIcon>
+                  <HomeIcon />
                   <ListItemText secondary="Home" />
-                </StyledLink>
-              </StyledListItemIcon>
-            </ListItemButton>
+                </StyledListItemIcon>
+              </ListItemButton>
+            </StyledLink>
           </StyledListItem>
           <StyledListItem disablePadding>
-            <ListItemButton>
-              <StyledListItemIcon>
-                <HistoryIcon />
-                <StyledLink href="/historico">
+            <StyledLink href="/historico">
+              <ListItemButton>
+                <StyledListItemIcon>
+                  <HistoryIcon />
                   <ListItemText secondary="Histórico" />
-                </StyledLink>
-              </StyledListItemIcon>
-            </ListItemButton>
+                </StyledListItemIcon>
+              </ListItemButton>
+            </StyledLink>
           </StyledListItem>
           <StyledListItem disablePadding>
-            <ListItemButton>
-              <StyledListItemIcon>
-                <SettingsIcon />
-                <StyledLink href="/configuracoes">
+            <StyledLink href="/configuracoes">
+              <ListItemButton>
+                <StyledListItemIcon>
+                  <SettingsIcon />
                   <ListItemText secondary="Config." />
-                </StyledLink>
-              </StyledListItemIcon>
-            </ListItemButton>
+                </StyledListItemIcon>
+              </ListItemButton>
+            </StyledLink>
           </StyledListItem>
         </StyledList>
       </nav>
