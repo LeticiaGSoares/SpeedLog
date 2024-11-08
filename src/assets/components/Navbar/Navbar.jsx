@@ -1,16 +1,16 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import HomeIcon from '@mui/icons-material/Home';
-import HistoryIcon from '@mui/icons-material/History';
-import SettingsIcon from '@mui/icons-material/Settings';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import HomeIcon from "@mui/icons-material/Home";
+import HistoryIcon from "@mui/icons-material/History";
+import SettingsIcon from "@mui/icons-material/Settings";
 
-import theme from '../../theme'
-import styled from 'styled-components';
+import theme from "../../theme";
+import styled from "styled-components";
 
 const StyledList = styled(List)`
   display: flex;
@@ -20,29 +20,35 @@ const StyledList = styled(List)`
 `;
 
 const StyledListItem = styled(ListItem)`
-  &:active{
-    p, svg{
+  &:active {
+    p,
+    svg {
       color: white;
     }
-  }  
+  }
+`;
+
+const StyledLink = styled("a")`
+  text-decoration: none;
 `;
 
 const StyledListItemIcon = styled(ListItemIcon)`
-  display:flex;
+  display: flex;
   flex-direction: column;
-`
-
+`;
 
 const Navbar = () => {
   return (
-    <Box sx={{ width: '100%', maxWidth: 360, bgcolor: theme.colors.greenRegular }}>
+    <Box sx={{ width: "100%", bgcolor: theme.colors.greenRegular }}>
       <nav aria-label="main mailbox folders">
         <StyledList disablePadding>
           <StyledListItem disablePadding>
             <ListItemButton>
               <StyledListItemIcon>
                 <HomeIcon />
-                <ListItemText secondary="Home" />
+                <StyledLink href="/inicio">
+                  <ListItemText secondary="Home" />
+                </StyledLink>
               </StyledListItemIcon>
             </ListItemButton>
           </StyledListItem>
@@ -50,7 +56,9 @@ const Navbar = () => {
             <ListItemButton>
               <StyledListItemIcon>
                 <HistoryIcon />
-                <ListItemText secondary="Histórico" />
+                <StyledLink href="/historico">
+                  <ListItemText secondary="Histórico" />
+                </StyledLink>
               </StyledListItemIcon>
             </ListItemButton>
           </StyledListItem>
@@ -58,7 +66,9 @@ const Navbar = () => {
             <ListItemButton>
               <StyledListItemIcon>
                 <SettingsIcon />
-                <ListItemText secondary="Config." />
+                <StyledLink href="/configuracoes">
+                  <ListItemText secondary="Config." />
+                </StyledLink>
               </StyledListItemIcon>
             </ListItemButton>
           </StyledListItem>
@@ -66,6 +76,6 @@ const Navbar = () => {
       </nav>
     </Box>
   );
-}
+};
 
-export default Navbar
+export default Navbar;
