@@ -1,7 +1,4 @@
-import * as React from "react";
-import styled from "styled-components";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import NotFound from "./assets/pages/NotFound/NotFound";
 import Protected from "./assets/pages/Protected/Protected";
 import Dashboard from "./assets/pages/Dashboard/Dashboard";
 import MessageDisplay from "./assets/components/Message/MessageDisplay.jsx";
@@ -10,6 +7,7 @@ import { MessageProvider } from "./assets/components/Message/MessageContext.jsx"
 import { Login } from "./assets/routes/index.js";
 import Navbar from "./assets/components/Navbar/Navbar";
 import Config from "./assets/pages/Config/Config";
+import EditProfile from "./assets/pages/Config/pages/EditProfile/EditProfile.jsx";
 
 const App = () => {
   return (
@@ -27,11 +25,20 @@ const App = () => {
             }
           />
           <Route
-            path="/Config"
+            path="/config"
             element={
               <>
-                  <Config />
-                  <Navbar />
+                <Config />
+                <Navbar />
+              </>
+            }
+          />
+          <Route
+            path="/config/profile/edit"
+            element={
+              <>
+                <EditProfile />
+                <Navbar />
               </>
             }
           />

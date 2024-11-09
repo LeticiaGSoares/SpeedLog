@@ -64,7 +64,7 @@ const Navbar = () => {
             </StyledLink>
           </StyledListItem>
           <StyledListItem disablePadding>
-            <StyledLink href="/configuracoes">
+            <StyledLink href="/config">
               <ListItemButton>
                 <StyledListItemIcon>
                   <SettingsIcon />

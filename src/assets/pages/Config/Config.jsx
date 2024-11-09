@@ -86,6 +86,12 @@ const StyledContainerText = styled.div`
     gap: 10px;
 `
 
+const StyledLink = styled("a")`
+  width: 100%;
+  text-decoration: none;
+  color: black;
+`;
+
 const Config = () => {
   return (
     <>
@@ -95,15 +101,17 @@ const Config = () => {
         </StyledSession>
         <StyledSession>
           <StyledContainerCards>
-            <StyledCardContainer>
-              <StyledCardIconContainer>
-                <StyledIconProfile />
-              </StyledCardIconContainer>
-              <StyledContainerText>
-                <h3>Editar perfil</h3>
-                <p>Ver perfil, alterar dados da conta, email e senha</p>
-              </StyledContainerText>
-            </StyledCardContainer>
+            <StyledLink href="/config/profile/edit">
+              <StyledCardContainer>
+                <StyledCardIconContainer>
+                  <StyledIconProfile />
+                </StyledCardIconContainer>
+                <StyledContainerText>
+                  <h3>Editar perfil</h3>
+                  <p>Ver perfil, alterar dados da conta, email e senha</p>
+                </StyledContainerText>
+              </StyledCardContainer>
+            </StyledLink>
             <StyledCardContainer>
               <StyledCardIconContainer>
                 <StyledIconLocation />
@@ -112,7 +120,7 @@ const Config = () => {
                 <h3>Gerenciar locais favoritos</h3>
                 <p>Ver locais facoritos criar e alterar endereços</p>
               </StyledContainerText>
-            </StyledCardContainer> 
+            </StyledCardContainer>
             <StyledCardContainerOut>
               <StyledCardIconContainer style={{ backgroundColor: "red" }}>
                 <StyledIconOut />
@@ -120,7 +128,7 @@ const Config = () => {
               <StyledContainerText>
                 <h3>Sair da conta</h3>
               </StyledContainerText>
-            </StyledCardContainerOut> 
+            </StyledCardContainerOut>
           </StyledContainerCards>
         </StyledSession>
       </StyledSessionsContainer>
