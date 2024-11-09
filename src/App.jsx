@@ -9,7 +9,7 @@ import { MessageProvider } from "./assets/components/Message/MessageContext.jsx"
 
 import { Login } from "./assets/routes/index.js";
 import Navbar from "./assets/components/Navbar/Navbar";
-import Home from "./assets/pages/Home/Home";
+import Config from "./assets/pages/Config/Config";
 
 const App = () => {
   return (
@@ -27,10 +27,10 @@ const App = () => {
             }
           />
           <Route
-            path="/home"
+            path="/Config"
             element={
               <>
-                  <Home />
+                  <Config />
                   <Navbar />
               </>
             }

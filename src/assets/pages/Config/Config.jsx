@@ -1,8 +1,7 @@
 import { styled } from "styled-components";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import SendRoundedIcon from "@mui/icons-material/SendRounded";
-import MoveToInboxRoundedIcon from "@mui/icons-material/MoveToInboxRounded";
-import StorefrontRoundedIcon from "@mui/icons-material/StorefrontRounded";
+import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 
 const StyledSessionsContainer = styled.div`
   display: flex;
@@ -19,20 +18,16 @@ const StyledSession = styled.div`
 `;
 
 const StyledIconProfile = styled(AccountCircleIcon)`
-  transform: scale(1.2);
-`;
-
-const StyledIconSend = styled(SendRoundedIcon)`
   color: white;
   transform: scale(1.2);
 `;
 
-const StyledIconBox = styled(MoveToInboxRoundedIcon)`
+const StyledIconLocation = styled(LocationOnRoundedIcon)`
   color: white;
   transform: scale(1.2);
 `;
 
-const StyledIconStore = styled(StorefrontRoundedIcon)`
+const StyledIconOut = styled(LogoutRoundedIcon)`
   color: white;
   transform: scale(1.2);
 `;
@@ -60,6 +55,22 @@ const StyledCardContainer = styled.div`
   }
 `;
 
+const StyledCardContainerOut = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 10px;
+  background-color: transparent;
+  width: 100%;
+
+  &:hover {
+    outline: 3px solid red;
+  }
+`;
+
 const StyledCardIconContainer = styled.div`
   display: flex;
   align-items: center;
@@ -75,46 +86,41 @@ const StyledContainerText = styled.div`
     gap: 10px;
 `
 
-const Home = () => {
+const Config = () => {
   return (
     <>
       <StyledSessionsContainer>
         <StyledSession>
-          <StyledIconProfile />
-          <h1>Olá, Christiano</h1>
-        </StyledSession>
-        <StyledSession>
-          <h2>Escolha uma opção de entrega</h2>
+          <h2>Configurações</h2>
         </StyledSession>
         <StyledSession>
           <StyledContainerCards>
             <StyledCardContainer>
               <StyledCardIconContainer>
-                <StyledIconSend />
+                <StyledIconProfile />
               </StyledCardIconContainer>
               <StyledContainerText>
-                <h3>Enviar um item</h3>
-                <p>Informe o peso, endereço de destino e origem da entrega</p>
+                <h3>Editar perfil</h3>
+                <p>Ver perfil, alterar dados da conta, email e senha</p>
               </StyledContainerText>
             </StyledCardContainer>
             <StyledCardContainer>
               <StyledCardIconContainer>
-                <StyledIconBox />
+                <StyledIconLocation />
               </StyledCardIconContainer>
               <StyledContainerText>
-                <h3>Receber item</h3>
-                <p>Informe o peso, endereço de destino e origem da entrega</p>
+                <h3>Gerenciar locais favoritos</h3>
+                <p>Ver locais facoritos criar e alterar endereços</p>
               </StyledContainerText>
-            </StyledCardContainer>
-            <StyledCardContainer>
-              <StyledCardIconContainer>
-                <StyledIconStore />
+            </StyledCardContainer> 
+            <StyledCardContainerOut>
+              <StyledCardIconContainer style={{ backgroundColor: "red" }}>
+                <StyledIconOut />
               </StyledCardIconContainer>
               <StyledContainerText>
-                <h3>Retirar pedido na loja</h3>
-                <p>Informe o peso, endereço de destino e origem da entrega</p>
+                <h3>Sair da conta</h3>
               </StyledContainerText>
-            </StyledCardContainer>
+            </StyledCardContainerOut> 
           </StyledContainerCards>
         </StyledSession>
       </StyledSessionsContainer>
@@ -122,4 +128,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Config;
