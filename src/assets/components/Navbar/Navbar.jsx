@@ -8,6 +8,7 @@ import ListItemText from "@mui/material/ListItemText";
 import HomeIcon from "@mui/icons-material/Home";
 import HistoryIcon from "@mui/icons-material/History";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { Link } from "react-router-dom";
 
 import theme from "../../theme";
 import styled from "styled-components";
@@ -28,7 +29,7 @@ const StyledListItem = styled(ListItem)`
   }
 `;
 
-const StyledLink = styled("a")`
+const StyledLink = styled(Link)`
   width: 100%;
   text-decoration: none;
 `;
@@ -44,7 +45,7 @@ const Navbar = () => {
       <nav aria-label="main mailbox folders">
         <StyledList disablePadding>
           <StyledListItem disablePadding>
-            <StyledLink href="/home">
+            <StyledLink to="/home">
               <ListItemButton>
                 <StyledListItemIcon>
                   <HomeIcon />
@@ -54,7 +55,7 @@ const Navbar = () => {
             </StyledLink>
           </StyledListItem>
           <StyledListItem disablePadding>
-            <StyledLink href="/historico">
+            <StyledLink to="/historico">
               <ListItemButton>
                 <StyledListItemIcon>
                   <HistoryIcon />
@@ -64,7 +65,7 @@ const Navbar = () => {
             </StyledLink>
           </StyledListItem>
           <StyledListItem disablePadding>
-            <StyledLink href="/configuracoes">
+            <StyledLink to="/configuracoes">
               <ListItemButton>
                 <StyledListItemIcon>
                   <SettingsIcon />

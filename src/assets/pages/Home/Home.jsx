@@ -3,6 +3,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import SendRoundedIcon from "@mui/icons-material/SendRounded";
 import MoveToInboxRoundedIcon from "@mui/icons-material/MoveToInboxRounded";
 import StorefrontRoundedIcon from "@mui/icons-material/StorefrontRounded";
+import { Link } from "react-router-dom";
 
 const StyledSessionsContainer = styled.div`
   display: flex;
@@ -45,7 +46,7 @@ const StyledContainerCards = styled.div`
   width: 100%;
 `;
 
-const StyledCardContainer = styled.div`
+const StyledCardContainer = styled(Link)`
   display: flex;
   flex-direction: row;
   gap: 20px;
@@ -88,7 +89,7 @@ const Home = () => {
         </StyledSession>
         <StyledSession>
           <StyledContainerCards>
-            <StyledCardContainer>
+            <StyledCardContainer to="/entrega/enviar">
               <StyledCardIconContainer>
                 <StyledIconSend />
               </StyledCardIconContainer>
@@ -97,7 +98,7 @@ const Home = () => {
                 <p>Informe o peso, endereço de destino e origem da entrega</p>
               </StyledContainerText>
             </StyledCardContainer>
-            <StyledCardContainer>
+            <StyledCardContainer to="/entrega/receber">
               <StyledCardIconContainer>
                 <StyledIconBox />
               </StyledCardIconContainer>
@@ -106,7 +107,7 @@ const Home = () => {
                 <p>Informe o peso, endereço de destino e origem da entrega</p>
               </StyledContainerText>
             </StyledCardContainer>
-            <StyledCardContainer>
+            <StyledCardContainer to="/entrega/pedidoLoja">
               <StyledCardIconContainer>
                 <StyledIconStore />
               </StyledCardIconContainer>
