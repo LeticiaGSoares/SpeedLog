@@ -101,7 +101,7 @@ const Config = () => {
         </StyledSession>
         <StyledSession>
           <StyledContainerCards>
-            <StyledLink href="/config/profile/edit">
+            <StyledLink href="/config/profile">
               <StyledCardContainer>
                 <StyledCardIconContainer>
                   <StyledIconProfile />

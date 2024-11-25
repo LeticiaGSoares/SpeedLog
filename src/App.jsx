@@ -7,7 +7,7 @@ import { MessageProvider } from "./assets/components/Message/MessageContext.jsx"
 import { Login } from "./assets/routes/index.js";
 import Navbar from "./assets/components/Navbar/Navbar";
 import Config from "./assets/pages/Config/Config";
-import EditProfile from "./assets/pages/Config/pages/EditProfile/EditProfile.jsx";
+import ViewProfile from "./assets/pages/Config/pages/Profile/ViewProfile.jsx";
 
 const App = () => {
   return (
@@ -34,10 +34,10 @@ const App = () => {
             }
           />
           <Route
-            path="/config/profile/edit"
+            path="/config/profile"
             element={
               <>
-                <EditProfile />
+                <ViewProfile />
                 <Navbar />
               </>
             }
