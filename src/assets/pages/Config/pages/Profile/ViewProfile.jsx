@@ -120,8 +120,10 @@ const ViewProfile = () => {
         <StyledSession>
           <StyledProfileContainer>
             <StyledProfileContanierButtons>
-              <StyledIconArrowBack />
-              <StyledIconPencil />
+              <StyledIconArrowBack 
+                onClick={() => window.location.href = "/config/"}
+              />
+              <StyledIconPencil/>
             </StyledProfileContanierButtons>
             <StyledProfileContanierInfo>
               <StyledProfileContainerIcon>
