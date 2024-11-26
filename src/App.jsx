@@ -17,7 +17,7 @@ const App = () => {
             <MessageDisplay />
             <Routes>
                 <Route path="/*" element={<AutenticacaoRouter />} />
-                <Route path="/home" element={<Home/>}/>
+                <Route path="/home" element={<Login/>}/>
             </Routes>
       </BrowserRouter>
     </MessageProvider>
