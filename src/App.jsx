@@ -6,8 +6,7 @@ import { MessageProvider } from "./assets/components/Message/MessageContext.jsx"
 
 import { Login } from "./assets/routes/index.js";
 import Navbar from "./assets/components/Navbar/Navbar";
-import Config from "./assets/pages/Config/Config";
-import ViewProfile from "./assets/pages/Config/pages/Profile/ViewProfile.jsx";
+import Historico from "./assets/pages/Historico/Historico";
 
 const App = () => {
   return (
@@ -25,6 +24,7 @@ const App = () => {
             }
           />
           <Route
+            path="/historico"
             path="/config"
             element={
               <>
@@ -37,6 +37,8 @@ const App = () => {
             path="/config/profile"
             element={
               <>
+                  <Historico />
+                  <Navbar />
                 <ViewProfile />
                 <Navbar />
               </>
