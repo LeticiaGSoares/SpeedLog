@@ -1,0 +1,635 @@
+{
+	"info": {
+		"_postman_id": "039c0e64-bcec-4fd0-beef-e276896356e6",
+		"name": "SpeedLog_API",
+		"description": "# **Rotas**\n\n### **Usuários**\n\n**\\-> RF0101 - Registro de cliente**\n\n**\\-> RF0102 - Registro de motoboy**\n\n**\\-> RF0103 - Registro de admin (admin)**\n\n**\\-> RF0104 - Pesquisar usuario (Admin)**\n\n- Parâmetros possíveis: id, nome, cidade, tipo, cnh, moto_placa\n    \n- Sem nenhum parâmetro, são retornados todos os usuários.\n    \n\n**\\-> RF0105 - Login usuário**\n\n**\\-> RF0106 - Logout usuário**\n\n**\\-> RF0107 - Deletar usuario**\n\n- A pessoa está logada\n    \n- Tem o mesmo id do usuário a ser deletado ou é admin.\n    \n\n**\\-> RF0108 - Atualizar usuario**\n\n- Só será permitido atualizar: senha, cidade, telefone, email, foto)\n    \n- Tem o mesmo id do usuário a ser atualizado ou é admin.\n    \n\n### **Entregas**\n\n**\\-> RF0201 - Registro de entrega (Cliente)**\n\n**\\-> RF0202 - Mudar status**\n\n- \\[Admin/ Motoboy\\] Pode mudar status para ‘em_transito’ ou ‘entregue’\n    \n- \\[Admin/Cliente ou motoboy\\] Pode mudar status para ‘cancelada’ se o status atual for “pendente”\n    \n\n**\\-> RF0203 - Ver entregas**\n\n- Prâmetros possíveis: id, status\n    \n- Sem nenhum parâmetro, são retornados todos os usuários.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37199412"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Client",
+					"item": [
+						{
+							"name": "Registro Cliente",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "nome",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "senha",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "foto",
+											"type": "file",
+											"src": []
+										},
+										{
+											"key": "papel",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "data_nascimento",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "telefone",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "cidade",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "disponivel",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "cpf",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "cnh",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "moto_placa",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "moto_modelo",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/usuario/registrar/cliente",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"usuario",
+										"registrar",
+										"cliente"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Motoboy",
+					"item": [
+						{
+							"name": "Registro Motoboy",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "nome",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "senha",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "foto",
+											"type": "file",
+											"src": []
+										},
+										{
+											"key": "papel",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "data_nascimento",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "telefone",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "cidade",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "disponivel",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "cpf",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "cnh",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "moto_placa",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "moto_modelo",
+											"value": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/usuario/registrar/motoboy",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"usuario",
+										"registrar",
+										"motoboy"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Admin",
+					"item": [
+						{
+							"name": "Registro admin",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "nome",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "senha",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "foto",
+											"type": "file",
+											"src": []
+										},
+										{
+											"key": "papel",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "data_nascimento",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "telefone",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "cidade",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "avaliacao",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "disponivel",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "cpf",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "cnh",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "moto_placa",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "moto_modelo",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/usuario/registrar/admin",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"usuario",
+										"registrar",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Pesquisar usuário",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/usuario",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuario"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "nome",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "tipo",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "cidade",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "cnh",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "moto_placa",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login usuário",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "cpf",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "senha",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/usuario/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuario",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout usuário",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/usuario/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuario",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar usuário",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/usuario/deletar/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuario",
+								"deletar",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar usuário",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "senha",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "cidade",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "telefone",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "foto",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/usuario/atualizar/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuario",
+								"atualizar",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Entrega",
+			"item": [
+				{
+					"name": "Registrar entrega [Cliente]",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "peso",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "usuario_id",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "cep_origem",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "cep_origem",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/entrega/registrar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"entrega",
+								"registrar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar status",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "status",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/entrega/registrar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"entrega",
+								"registrar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ver entrega",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/entrega?id&status",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"entrega"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": null
+								},
+								{
+									"key": "status",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3333/api",
+			"type": "string"
+		}
+	]
+}
