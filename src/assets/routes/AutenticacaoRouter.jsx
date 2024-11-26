@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import CadastroCliente from '../pages/Cadastro/CadastroCliente/CadastroCliente';
 import CadastroMotoboy from '../pages/Cadastro/CadastroMotoboy/CadastroMotoboy';
 import Login from '../pages/Login/Login';
