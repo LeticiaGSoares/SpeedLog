@@ -8,6 +8,7 @@ import ListItemText from "@mui/material/ListItemText";
 import HomeIcon from "@mui/icons-material/Home";
 import HistoryIcon from "@mui/icons-material/History";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { Link } from "react-router-dom";
 
 import theme from "../../theme";
 import styled from "styled-components";
@@ -28,7 +29,7 @@ const StyledListItem = styled(ListItem)`
   }
 `;
 
-const StyledLink = styled("a")`
+const StyledLink = styled(Link)`
   width: 100%;
   text-decoration: none;
 `;
@@ -40,38 +41,32 @@ const StyledListItemIcon = styled(ListItemIcon)`
 
 const Navbar = () => {
   return (
-    <Box sx={{ width: "100%", bgcolor: theme.colors.greenRegular}}>
+    <Box sx={{ width: "100%", bgcolor: theme.colors.greenRegular }}>
       <nav aria-label="main mailbox folders">
         <StyledList disablePadding>
           <StyledListItem disablePadding>
-            <StyledLink href="/home">
-              <ListItemButton>
-                <StyledListItemIcon>
-                  <HomeIcon />
-                  <ListItemText secondary="Home" />
-                </StyledListItemIcon>
-              </ListItemButton>
-            </StyledLink>
+            <ListItemButton to="/home">
+              <StyledListItemIcon>
+                <HomeIcon />
+                <ListItemText secondary="Home" />
+              </StyledListItemIcon>
+            </ListItemButton>
           </StyledListItem>
           <StyledListItem disablePadding>
-            <StyledLink href="/historico">
-              <ListItemButton>
-                <StyledListItemIcon>
-                  <HistoryIcon />
-                  <ListItemText secondary="Histórico" />
-                </StyledListItemIcon>
-              </ListItemButton>
-            </StyledLink>
+            <ListItemButton to="/historico">
+              <StyledListItemIcon>
+                <HistoryIcon />
+                <ListItemText secondary="Histórico" />
+              </StyledListItemIcon>
+            </ListItemButton>
           </StyledListItem>
           <StyledListItem disablePadding>
-            <StyledLink href="/config">
-              <ListItemButton>
-                <StyledListItemIcon>
-                  <SettingsIcon />
-                  <ListItemText secondary="Config." />
-                </StyledListItemIcon>
-              </ListItemButton>
-            </StyledLink>
+            <ListItemButton to="/config">
+              <StyledListItemIcon>
+                <SettingsIcon />
+                <ListItemText secondary="Config." />
+              </StyledListItemIcon>
+            </ListItemButton>
           </StyledListItem>
         </StyledList>
       </nav>

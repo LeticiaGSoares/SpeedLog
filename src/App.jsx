@@ -3,11 +3,14 @@ import Protected from "./assets/pages/Protected/Protected";
 import Dashboard from "./assets/pages/Dashboard/Dashboard";
 import MessageDisplay from "./assets/components/Message/MessageDisplay.jsx";
 import { MessageProvider } from "./assets/components/Message/MessageContext.jsx";
+
+import RegistrarEntrega from './assets/pages/Home/RegistrarEntrega'
 import { Login } from "./assets/routes/index.js";
 import Navbar from "./assets/components/Navbar/Navbar";
 import Historico from "./assets/pages/Historico/Historico";
 import Config from "./assets/pages/Config/Config.jsx";
 import ViewProfile from "./assets/pages/Config/pages/Profile/ViewProfile.jsx";
+import Home from "./assets/pages/Home/Home.jsx";
 
 const App = () => {
   return (
@@ -28,9 +31,9 @@ const App = () => {
             path="/historico"
             element={
               <>
-              <Historico />
-              <Navbar />
-            </>
+                <Historico />
+                <Navbar />
+              </>
             }
           />
           <Route
@@ -47,6 +50,24 @@ const App = () => {
             element={
               <>
                 <ViewProfile />
+                <Navbar />
+              </>
+            }
+          />
+          <Route
+            path="/home"
+            element={
+              <>
+                <Home />
+                <Navbar />
+              </>
+            }
+          />
+          <Route
+            path="/entrega/enviar"
+            element={
+              <>
+                <RegistrarEntrega />
                 <Navbar />
               </>
             }
