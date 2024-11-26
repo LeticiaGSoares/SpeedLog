@@ -129,6 +129,39 @@ const RegistrarEntrega = () => {
     return () => map.un('click', handleMapClick); // Limpar evento ao desmontar
   }, [map, markers]);
 
+  // Função para calcular a distância haversine entre dois pontos
+const calculateDistance = ([lon1, lat1], [lon2, lat2]) => {
+  const toRad = (value) => (value * Math.PI) / 180; // Converter graus para radianos
+  const R = 6371; // Raio médio da Terra em km
+
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * 
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c; // Retorna a distância em km
+};
+
+const calculateWeightCost = (peso) => {
+  if (peso < 1000) return 3.0; // Menos de 1Kg
+  if (peso >= 1000 && peso < 3000) return 5.0; // Entre 1Kg e 3Kg
+  if (peso >= 3000 && peso < 8000) return 9.0; // Entre 3Kg e 8Kg
+  if (peso >= 8000 && peso < 12000) return 12.0; // Entre 8Kg e 12Kg
+  return null; // Acima de 12Kg, não é possível transportar
+};
+const calculateDistanceCost = (distance) => distance * 0.5; // R$0,50 por km
+const calculateTimeCost = (timeInMinutes) => timeInMinutes * 0.3; // R$0,30 por minuto
+  
+const isStep1Valid = () => {
+  return (
+    addresses.every((address) => address.trim() !== '') && peso > 0
+  );
+};
+
   return (
     <div>
       <MapContainer ref={mapRef}></MapContainer>
@@ -136,12 +169,16 @@ const RegistrarEntrega = () => {
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Link to="/home">Voltar</Link>
           <h3>Nova entrega</h3>
-          <button onClick={() => setStep((prev) => (prev === 1 ? 2 : 1))}>
-            {step === 1 ? 'Próximo' : 'Voltar'}
-          </button>
+          <button 
+          onClick={() => setStep(2)} 
+          disabled={!isStep1Valid()}
+          >
+          Próximo
+        </button>
         </div>
         {step === 1 && (
           <>
+          <small>Clique em dois pontos no mapa</small>
             {markers.map((marker, index) => (
               <div key={index}>
                 <MarkerInfo>
@@ -167,17 +204,40 @@ const RegistrarEntrega = () => {
           </>
         )}
         {step === 2 && (
+  <>
+    {markers[0][0] !== null && markers[1][0] !== null ? (
+      <>
+        {peso > 0 && (
           <>
-            <h1>Resumo da entrega</h1>
-            <p>Endereços:</p>
-            {addresses.map((address, index) => (
-              <p key={index}>
-                Ponto {index + 1}: {address || 'Não informado'}
-              </p>
-            ))}
-            <p>Peso do item: {peso > 0 ? `${peso}g` : 'Não informado'}</p>
+            {calculateWeightCost(peso) !== null ? (
+              <>
+                <p style={{alignSelf: 'center', fontSize: '40px'}}>
+                  <strong>
+                    <span style={{color: '#959595', fontWeight: 'lighter'}}>
+                    Total:
+                      </span> R$
+                    {(
+                      calculateWeightCost(peso) +
+                      calculateDistanceCost(calculateDistance(markers[0], markers[1])) +
+                      calculateTimeCost(30)
+                    ).toFixed(2)}
+                  </strong>
+                </p>
+              </>
+            ) : (
+              <p>Não é possível transportar mercadorias acima de 12Kg.</p>
+            )}
           </>
         )}
+      </>
+    ) : (
+      <p>Defina os dois pontos para calcular a distância e o preço.</p>
+    )}
+  </>
+)}
+
+
+
       </InfoContainer>
     </div>
   );

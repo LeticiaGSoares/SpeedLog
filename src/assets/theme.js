@@ -27,6 +27,7 @@ export const InfoContainer = styled.div`
   padding: 40px;
   background-color: #f9f9f9;
   border: 1px solid #ddd;
+  color: #208F6D;
   border-radius: 0 0 8px 8px;
   position: absolute;
   z-index: 9999;
@@ -36,13 +37,30 @@ export const InfoContainer = styled.div`
   top: 0;
   width: 80%;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
+  a{
+    text-decoration: none;
+    color: #959595;
+  }
+
+  button{
+    background-color: #2BE88B;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    color: #fff
+  }
+
+  button:disabled,
+  button[disabled]{
+  opacity: .5
+  }
 `;
 
 export const MarkerInfo = styled.p`
   font-size: 16px;
   margin: 5px 0;
   color: #333;
-
   
 `;
 

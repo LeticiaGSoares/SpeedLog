@@ -11,6 +11,7 @@ import RegistrarEntrega from './assets/pages/Home/RegistrarEntrega'
 import { Login } from "./assets/routes/index.js";
 import Navbar from "./assets/components/Navbar/Navbar";
 import Home from "./assets/pages/Home/Home";
+import EmBreve from "./assets/pages/EmBreve/EmBreve.jsx";
 
 const App = () => {
   return (
@@ -43,6 +44,26 @@ const App = () => {
                 <RegistrarEntrega/>
               </>
             }
+          />
+          <Route
+            path="/entrega/receber"
+            element={
+              <>
+                <RegistrarEntrega/>
+              </>
+            }
+          />
+          <Route
+            path="/entrega/retirarPedido"
+            element={
+              <>
+                <RegistrarEntrega/>
+              </>
+            }
+          />
+          <Route
+            path="/emBreve"
+            element = {<EmBreve/>}
           />
         </Routes>
       </BrowserRouter>
