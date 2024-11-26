@@ -150,7 +150,7 @@ const CadastroFotoCliente = () => {
     setSnackbarSeverity("success");
     setSnackbarOpen(true);
     setTimeout(() => {
-      navegar("/sucesso");
+      navegar("/home");
     }, 2000);
   };
 

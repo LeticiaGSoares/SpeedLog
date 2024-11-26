@@ -14,7 +14,7 @@ const AutenticacaoRouter = () => {
     <Route path="/escolha-de-perfil" element={<EscolhaDePerfil />} />
     <Route path='/cadastro-cliente' element={<CadastroCliente />} />
     <Route path='/cadastro-motoboy' element={<CadastroMotoboy />} />
-    <Route path='/foto-motoboy' element={<fotoMotoboy />} />
+    <Route path='/foto-motoboy' element={<UploadFotoPerfil />} />
     <Route path='/dados-moto' element={<DetalhesMoto />}/>
     <Route path='/foto-cliente' element={<UploadFotoPerfil/>}/>
   </Routes>
