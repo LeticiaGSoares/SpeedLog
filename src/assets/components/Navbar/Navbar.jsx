@@ -40,7 +40,7 @@ const StyledListItemIcon = styled(ListItemIcon)`
 
 const Navbar = () => {
   return (
-    <Box sx={{ width: "100%", bgcolor: theme.colors.greenRegular }}>
+    <Box sx={{ width: "100%", bgcolor: theme.colors.greenRegular}}>
       <nav aria-label="main mailbox folders">
         <StyledList disablePadding>
           <StyledListItem disablePadding>

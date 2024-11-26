@@ -37,6 +37,7 @@ const StyledContainerCards = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  justify-content: center;
   width: 100%;
 `;
 
@@ -48,7 +49,6 @@ const StyledCardContainer = styled.div`
   padding: 8px;
   border-radius: 10px;
   background-color: rgb(145, 145, 145, 0.25);
-  width: 100%;
 
   &:hover {
     outline: 3px solid #2BE88B;
@@ -64,7 +64,6 @@ const StyledCardContainerOut = styled.div`
   padding: 8px;
   border-radius: 10px;
   background-color: transparent;
-  width: 100%;
 
   &:hover {
     outline: 3px solid red;
@@ -112,23 +111,27 @@ const Config = () => {
                 </StyledContainerText>
               </StyledCardContainer>
             </StyledLink>
-            <StyledCardContainer>
-              <StyledCardIconContainer>
-                <StyledIconLocation />
-              </StyledCardIconContainer>
-              <StyledContainerText>
-                <h3>Gerenciar locais favoritos</h3>
-                <p>Ver locais facoritos criar e alterar endereços</p>
-              </StyledContainerText>
-            </StyledCardContainer>
-            <StyledCardContainerOut>
-              <StyledCardIconContainer style={{ backgroundColor: "red" }}>
-                <StyledIconOut />
-              </StyledCardIconContainer>
-              <StyledContainerText>
-                <h3>Sair da conta</h3>
-              </StyledContainerText>
-            </StyledCardContainerOut>
+            <StyledLink href="#">
+              <StyledCardContainer>
+                <StyledCardIconContainer>
+                  <StyledIconLocation />
+                </StyledCardIconContainer>
+                <StyledContainerText>
+                  <h3>Gerenciar locais favoritos</h3>
+                  <p>Ver locais facoritos criar e alterar endereços</p>
+                </StyledContainerText>
+              </StyledCardContainer>
+            </StyledLink>
+            <StyledLink href="#">
+              <StyledCardContainerOut>
+                <StyledCardIconContainer style={{ backgroundColor: "red" }}>
+                  <StyledIconOut />
+                </StyledCardIconContainer>
+                <StyledContainerText>
+                  <h3>Sair da conta</h3>
+                </StyledContainerText>
+              </StyledCardContainerOut>
+            </StyledLink>
           </StyledContainerCards>
         </StyledSession>
       </StyledSessionsContainer>
