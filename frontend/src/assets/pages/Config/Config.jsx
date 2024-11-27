@@ -2,6 +2,7 @@ import { styled } from "styled-components";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
+import { useNavigate } from "react-router-dom";
 
 const StyledSessionsContainer = styled.div`
   display: flex;
@@ -92,6 +93,13 @@ const StyledLink = styled("a")`
 `;
 
 const Config = () => {
+  const navigate = useNavigate()
+
+  const logout = () => {
+    localStorage.setItem("token", null)
+    navigate("/")
+  }
+
   return (
     <>
       <StyledSessionsContainer>
@@ -122,7 +130,7 @@ const Config = () => {
                 </StyledContainerText>
               </StyledCardContainer>
             </StyledLink>
-            <StyledLink href="#">
+            <StyledLink onClick={() => logout()}>
               <StyledCardContainerOut>
                 <StyledCardIconContainer style={{ backgroundColor: "red" }}>
                   <StyledIconOut />

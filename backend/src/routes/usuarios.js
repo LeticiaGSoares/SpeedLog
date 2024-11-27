@@ -52,8 +52,6 @@ router.get(
 
 router.put(
     "/atualizar/:id",
-    indexUsuariosGlobalHelpers.auth,
-    indexUsuariosGlobalHelpers.validateBodyUpdate,
     indexControllersUsuarios.update
 )
 

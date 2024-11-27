@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -135,7 +135,6 @@ const CadastroFotoCliente = () => {
   const [cropperVisible, setCropperVisible] = useState(false);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
-
   const lidarEnvio = async (e) => {
     e.preventDefault();
     if (!image) {

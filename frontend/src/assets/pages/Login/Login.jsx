@@ -16,11 +16,11 @@ import { Person as PersonIcon, Lock as LockIcon } from "@mui/icons-material";
 import { styled } from "@mui/system";
 import { styled as styledComp } from "styled-components"
 import speedlog from "../imgs/speedlog.png";
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import loadingImage from "../imgs/loadingImage.png";
 import axios from 'axios';
 
-const baseURL = `http://localhost:3333/usuario/login`
+const baseURL = `http://localhost:3333/api/usuario/login`
 
 // Estilização de Botão Animado
 const BotaoAnimado = styled(Button)({
@@ -157,6 +157,7 @@ const Login = () => {
     const [snackbarGravidade, setSnackbarGravidade] = useState('error');
     const [carregando, setCarregando] = useState(true);
 
+    const navegar = useNavigate();
     // Efeito para simular carregamento
     useEffect(() => {
         const timer = setTimeout(() => setCarregando(false), 1200);
@@ -190,36 +191,36 @@ const Login = () => {
                     papel: "cliente",
                     senha: senha,
                 }).then((response) => {
-                    localStorage.setItem("token", response.data.message)
-                    if (response.data.error) {
-                        setTimeout(() => {
-                            window.location.href = '/home';
-                            setSnackbarMensagem('Login bem-sucedido!');
-                            setSnackbarGravidade('success');
-                            setSnackbarOpen(true);
-                        }, 2000);
+                    if (!response.data.error) {
+                        localStorage.setItem("token", response.data.message)
+                        window.location.href = '/home';
                     }
-                });
+                })
             } else if (cpfRegex.test(emailOuCpf)) {
                 axios.post(baseURL, {
                     cpf: emailOuCpf,
                     papel: "cliente",
                     senha: senha,
                 }).then((response) => {
-                    localStorage.setItem("token", response.data.message)
-                    if (response.data.error) {
-                        setTimeout(() => {
-                            window.location.href = '/home';
-                            setSnackbarMensagem('Login bem-sucedido!');
-                            setSnackbarGravidade('success');
+                    axios.post("http://localhost:3333/api/usuario/decode", {
+                        token: response.data.message
+                    }).then(((responseToken) => {
+                        if (!response.data.error) {
+                            localStorage.setItem("token", response.data.message)
+                            localStorage.setItem("usuario_id", JSON.stringify(responseToken.data.message.id))
+                            snackbarMensagem("Conta motoboy criada com sucesso!");
+                            snackbarGravidade("success");
                             setSnackbarOpen(true);
-                        }, 2000);
-                    }
-                });
+                            localStorage.setItem("motoboy_data", null)
+                            navegar("/home");
+                        }
+                    })
+                    )
+                })
             }
         }
 
-    }, [emailOuCpf, senha, lembrarDeMim]);
+    }, [emailOuCpf, senha, lembrarDeMim, snackbarMensagem, snackbarGravidade, navegar]);
 
     if (carregando) {
         return <TelaCarregando loadingImage={loadingImage} />;

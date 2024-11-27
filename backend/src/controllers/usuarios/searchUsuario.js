@@ -2,7 +2,8 @@ import returnRes from "../../helpers/returnRes.js";
 import searchUsuarioModule from "./modules/search.js";
 
 const searchUsuario = async (req, res) => {
-    const { id } = req.query  
+    const { id } = req.params  
+    console.log(id)
     try {
         return await searchUsuarioModule(id, res)
     } catch (error) {

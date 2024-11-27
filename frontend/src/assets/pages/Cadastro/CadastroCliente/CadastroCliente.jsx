@@ -1,3 +1,4 @@
+
 import React, { useReducer, useEffect } from "react";
 import {
   Box,
@@ -19,6 +20,7 @@ import InputMask from "react-input-mask";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { getStates, getCities } from "@brazilian-utils/brazilian-utils";
+import axios from "axios";
 
 const Container = styled(Box)({
   display: "flex",
@@ -104,6 +106,7 @@ const estadoInicial = {
   confirmacaoSenha: "",
 };
 
+
 const redutor = (estado, acao) => {
   switch (acao.type) {
     case "SET_FIELD":
@@ -112,6 +115,7 @@ const redutor = (estado, acao) => {
       return estado;
   }
 };
+const baseURL = `http://localhost:3333/api/usuario/registrar/cliente`
 
 const CadastroCliente = () => {
   const navegar = useNavigate();
@@ -156,8 +160,33 @@ const CadastroCliente = () => {
     setSnackbarMessage("Cadastro realizado com sucesso!");
     setSnackbarSeverity("success");
     setSnackbarOpen(true);
+    console.log(dadosFormulario)
     setTimeout(() => {
-      navegar("/foto-cliente");
+      axios.post(baseURL, {
+        nome: dadosFormulario.nome,
+        email: dadosFormulario.email,
+        papel: "cliente",
+        senha: dadosFormulario.senha,
+        data_nascimento: dadosFormulario.dataNascimento,
+        cidade: "Alagoas",
+        telefone: dadosFormulario.numero,
+        confirmarSenha: dadosFormulario.confirmacaoSenha
+      }).then((response) => {
+        axios.post("http://localhost:3333/api/usuario/decode", {
+          token: response.data.message
+        }).then(((responseToken) => {
+          if (!response.data.error) {
+            localStorage.setItem("token", response.data.message)
+            localStorage.setItem("usuario_id", JSON.stringify(responseToken.data.message.id))
+            setSnackbarMessage("Conta criada com sucesso!");
+            setSnackbarSeverity("success");
+            setSnackbarOpen(true);
+            navegar("/home");
+          }
+        })
+        )
+      })
+
     }, 2000);
   };
 
@@ -266,7 +295,7 @@ const CadastroCliente = () => {
                       field === "dataNascimento"
                         ? ""
                         : field.charAt(0).toUpperCase() +
-                          field.slice(1).replace(/([A-Z])/g, " $1")
+                        field.slice(1).replace(/([A-Z])/g, " $1")
                     }
                     name={field}
                     value={dadosFormulario[field]}
@@ -276,8 +305,8 @@ const CadastroCliente = () => {
                       field === "dataNascimento"
                         ? "date"
                         : field === "senha" || field === "confirmacaoSenha"
-                        ? "password"
-                        : "text"
+                          ? "password"
+                          : "text"
                     }
                     sx={estiloInput}
                     required

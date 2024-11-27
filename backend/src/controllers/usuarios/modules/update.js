@@ -3,14 +3,17 @@ import returnRes from "../../../helpers/returnRes.js";
 import Usuario from "../../../models/Usuario.js";
 
 const updateUsuarioModule = async (id, usuarioInfo, res) => {
+    const idFixed = id.replace(/"/g, '')
     try {
-        const verifyIfExist = await Usuario.findOne({ where: { email: usuarioInfo.email} })
+        if (usuarioInfo.email) {
+            const verifyIfExist = await Usuario.findOne({ where: { email: usuarioInfo.email } })
 
-        if (verifyIfExist) {
-            return returnRes("Este email já está sendo utilizado", 500, res)
+            if (verifyIfExist) {
+                return returnRes("Este email já está sendo utilizado", 500, res)
+            }
         }
 
-        const oldUsuario = await Usuario.findOne({ where: { usuario_id: id } })
+        const oldUsuario = await Usuario.findOne({ where: { usuario_id: idFixed } })
 
         if (!oldUsuario) {
             return returnRes("Usuario não encontrada", 404, res);
@@ -19,7 +22,7 @@ const updateUsuarioModule = async (id, usuarioInfo, res) => {
         await deleteArchive(oldUsuario.foto)
 
         const [linhasUsuarios] = await Usuario.update(usuarioInfo, {
-            where: { usuario_id: id },
+            where: { usuario_id: idFixed },
         });
 
         if (linhasUsuarios <= 0) {

@@ -16,6 +16,7 @@ import { styled } from "@mui/system";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import MaskedInput from 'react-text-mask';
+import axios from "axios";
 
 const Container = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -127,6 +128,8 @@ const redutor = (estado, acao) => {
   }
 };
 
+const baseURL = `http://localhost:3333/api/usuario/registrar/motoboy`
+
 const DetalhesMoto = () => {
   const navegar = useNavigate();
   const [dadosFormulario, despachar] = useReducer(redutor, estadoInicial);
@@ -135,6 +138,9 @@ const DetalhesMoto = () => {
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const [progresso, setProgresso] = useState("75%");
   const [loading, setLoading] = useState(false);
+  const dataForms = JSON.parse(localStorage.getItem("motoboy_data"))
+
+  console.log(dataForms)
 
   const lidarMudancaCampo = (e) => {
     const { name, value } = e.target;
@@ -157,25 +163,36 @@ const DetalhesMoto = () => {
       setSnackbarOpen(true);
       return;
     }
-
-    if (!dadosFormulario.fotoMoto) {
-      setSnackbarMessage("Por favor, carregue uma foto da moto.");
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
-      return;
-    }
     setProgresso("100%");
 
     setLoading(true);
     setTimeout(() => {
-      setSnackbarMessage("Dados da moto cadastrados com sucesso!");
-      setSnackbarSeverity("success");
-      setSnackbarOpen(true);
-      setLoading(false);
-
-      setTimeout(() => {
-        navegar("/pagina-inicial");
-      }, 2000);
+      axios.post(baseURL, {
+        nome: dataForms.nome,
+        email: dataForms.email,
+        papel: "motoboy",
+        senha: dataForms.senha,
+        data_nascimento: dataForms.dataNascimento,
+        telefone: dadosFormulario.numero,
+        confirmarSenha: dadosFormulario.confirmacaoSenha,
+        moto_placa: dadosFormulario.placa,
+        moto_modelo: dadosFormulario.modelo
+      }).then((response) => {
+        axios.post("http://localhost:3333/api/usuario/decode", {
+          token: response.data.message
+        }).then(((responseToken) => {
+          if (!response.data.error) {
+            localStorage.setItem("token", response.data.message)
+            localStorage.setItem("usuario_id", JSON.stringify(responseToken.data.message.id))
+            setSnackbarMessage("Conta motoboy criada com sucesso!");
+            setSnackbarSeverity("success");
+            setSnackbarOpen(true);
+            localStorage.setItem("motoboy_data", null)
+            navegar("/home");
+          }
+        })
+        )
+      })
     }, 1500);
   };
 
@@ -298,25 +315,7 @@ const DetalhesMoto = () => {
                 required
               />
             </Grid>
-            <Grid item xs={12}>
-              <UploadArea
-                onDragOver={(e) => e.preventDefault()}
-                onDrop={lidarArrastar}
-              >
-                <InputLabel>
-                  Arraste e solte a foto da moto ou clique abaixo
-                </InputLabel>
-                <UploadButton variant="contained" component="label">
-                  Selecionar Foto
-                  <input
-                    type="file"
-                    onChange={lidarMudancaArquivo}
-                    accept="image/*"
-                    hidden
-                  />
-                </UploadButton>
-              </UploadArea>
-            </Grid>
+
             {dadosFormulario.previewFoto && (
               <Grid item xs={12} display="flex" justifyContent="center">
                 <img

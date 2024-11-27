@@ -102,6 +102,7 @@ const redutor = (estado, acao) => {
   }
 };
 
+
 const CadastroMotoboy = () => {
   const navegar = useNavigate();
   const [dadosFormulario, despachar] = useReducer(redutor, estadoInicial);
@@ -164,6 +165,7 @@ const CadastroMotoboy = () => {
 
 
     setTimeout(() => {
+      localStorage.setItem("motoboy_data", JSON.stringify(dadosFormulario))
       navegar("/dados-moto");
     }, 2000);
   };

@@ -4,6 +4,10 @@ import SendRoundedIcon from "@mui/icons-material/SendRounded";
 import MoveToInboxRoundedIcon from "@mui/icons-material/MoveToInboxRounded";
 import StorefrontRoundedIcon from "@mui/icons-material/StorefrontRounded";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import axios from "axios";
+import { responsiveFontSizes } from "@mui/material";
+import { useEffect } from "react";
 
 const StyledSessionsContainer = styled.div`
   display: flex;
@@ -79,12 +83,23 @@ const StyledContainerText = styled.div`
 `
 
 const Home = () => {
+  const [ userData, setUserData ] = useState([])
+  const idUsuario = localStorage.getItem("usuario_id")
+
+  const getInfoUserAxios = async () => {
+    await axios.get(`http://localhost:3333/api/usuario/pesquisar/${idUsuario}`).then((response) => setUserData(response.data.message))
+  }
+
+  useEffect(() => {
+    getInfoUserAxios()
+  }, [])
+
   return (
     <>
       <StyledSessionsContainer>
         <StyledSession>
           <StyledIconProfile />
-          <h1>Olá, Christiano</h1>
+          <h1>Olá, {userData.nome}</h1>
         </StyledSession>
         <StyledSession>
           <h2>Escolha uma opção de entrega</h2>
